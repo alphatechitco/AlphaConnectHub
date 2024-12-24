@@ -1,0 +1,15 @@
+
+
+.device-register{
+    background-color: grey;
+    padding: 20px;
+
+}
+
+.register-form{
+    background-color: #f3f3f3;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

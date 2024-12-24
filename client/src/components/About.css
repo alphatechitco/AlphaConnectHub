@@ -1,0 +1,14 @@
+
+
+.about-page {
+    background-color: grey;
+    padding: 20px;
+
+}
+
+.about-app {
+    background-color: #f4f4f4;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    
+}

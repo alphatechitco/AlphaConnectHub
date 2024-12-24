@@ -1,0 +1,60 @@
+.App {
+  display: flex;
+  flex-direction: column;
+  height: 200vh;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(90deg, rgb(98, 2, 2), black);
+}
+
+.App-header {
+  background-color: black;
+  padding: 10px;
+  color: white;
+  text-align: center;
+}
+
+.app-logo{
+  width: 200px;
+}
+
+.App-container {
+
+}
+
+.App-main {
+  flex: 3;
+  padding: 20px;
+  border-right: 1px solid #ccc;
+}
+
+.App-sidebar {
+  flex: 1;
+  background-color: orange;
+  padding: 20px;
+}
+
+.App-sidebar h3 {
+  text-align: center;
+}
+
+.App-sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.App-sidebar li {
+  padding: 10px;
+  cursor: pointer;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+.App-sidebar li:hover {
+  background-color: #d0f0ff;
+}
+
+.App-sidebar li.active {
+  background-color: #007bff;
+  color: white;
+  font-weight: bold;
+}

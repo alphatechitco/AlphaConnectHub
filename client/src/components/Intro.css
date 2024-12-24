@@ -1,0 +1,93 @@
+
+
+
+.intro-page {
+    background-color: black;
+    height: 100vh;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+
+}
+
+.intro-header {
+    background-color:orange;
+    padding: 20px;
+    height: 58vh;
+   
+    border-radius: 8px;
+}
+
+.login-work {
+    background-color: brown;
+    padding: 5px;
+    width: 40%;
+    text-align: center;
+    margin-left: 350px;
+    border-radius: 10px;
+}
+.login-work button{
+    background-color: black;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+}
+.login-work button:hover{
+    border-color: red;
+}
+
+.intro-header h1 {
+    color: rgb(20, 5, 4);
+    font-family:Arial, Helvetica, sans-serif;
+    font-size: 2rem;
+    text-align: center;
+    
+
+}
+
+.intro-logo {
+    width: 300px;
+    margin-left: 10px;
+}
+
+.intro-logo:hover {
+    width: 300px;
+    margin-left: 10px;
+    transform: scale(1.2);
+}
+
+.process nav {
+    gap: 10px;
+    padding: 10px;
+    border-radius: 5px;
+}
+.process nav button {
+    background-color: black;
+    color: white;
+    padding: 10px;
+  
+    border-radius: 5px;
+}
+.process nav button:hover {
+    background-color: black;
+    color: white;
+    padding: 10px;
+    border-color: red;
+    border-radius: 5px;
+}
+
+.greet {
+    background-color: rgb(231, 94, 15);
+    text-align: center;
+    padding: 8px;
+    margin-top: 20px;
+    border-radius: 8px;
+}
+
+.process {
+    background-color: ;
+    
+    text-align: right;
+    margin-top: 0;
+}
+

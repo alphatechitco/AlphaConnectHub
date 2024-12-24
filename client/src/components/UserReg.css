@@ -1,0 +1,56 @@
+
+.userRegister-page {
+    background-color: orange;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 20px;
+    border-radius: 8px;
+    justify-content: center;
+    align-items: center;
+    margin: 20px auto;
+
+}
+
+.packages{
+    background-color: black;
+    padding: 15px;
+    height: 50vh;
+    text-align: center;
+    width: 90%;
+    border-radius: 8px;
+   
+}
+
+
+.userRegister-form {
+    background-color: rgb(15, 11, 1);
+    color: white;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 50vh;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(196, 21, 12, 0.4);
+}
+
+.userRegister-form input {
+    padding: 8px;
+    width: 40%;
+    border-radius: 4px;
+    
+}
+
+.error {
+    color: white;
+}
+.userRegister-form select {
+    padding: 7px;
+    width: 40%;
+    border-radius: 4px;
+
+}
+
+
+
+
