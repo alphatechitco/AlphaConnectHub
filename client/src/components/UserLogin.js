@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import './UserLogin.css';
 
 
-
 const UserLogin = ({setIsAuthenticated, setSelectedComponent }) =>{
     
 
@@ -64,6 +63,8 @@ const UserLogin = ({setIsAuthenticated, setSelectedComponent }) =>{
         <div className="userLogin-page">
 
             <h1>Login To Your Alpha Connect Hub</h1>
+
+            <button className="back-button" onClick={()=> setSelectedComponent("")}>Visit Main Page</button>
             <form className="userLogin-form" onSubmit={handleSubmit}>
 
                 <label htmlFor="email">Email:</label>

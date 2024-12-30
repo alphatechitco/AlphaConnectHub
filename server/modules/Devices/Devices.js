@@ -1,10 +1,9 @@
-const supabase = require('../database/dbconfig')
+const supabase = require('../../database/dbconfig')
 
 class Devices {
     constructor (){
 
     }
-
 
 
     async getDevices(){
@@ -22,8 +21,6 @@ class Devices {
 
 
     }
-
-
 }
 
 module.exports = Devices;

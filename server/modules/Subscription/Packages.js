@@ -7,7 +7,6 @@ class Packages {
     }
     
     async findPackage(package_name) {
-        console.log("M", package_name)
 
         const {data, error} = await supabase.from('packages').select('*').eq('package', package_name)
 

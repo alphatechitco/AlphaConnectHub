@@ -1,20 +1,19 @@
 const express = require('express')
 const router = express.Router();
-const Devices = require('../modules/Devices');
+const Devices = require('../modules/Devices/Devices');
 
 // API Endpoint To Fetch The Devices(Info & Details)
 router.get('/get-devices', async (req, res)=>{  
 
     try{
-        
         console.log("Api Triggered")
     
         const devices = new Devices();
 
-        const result = devices.getDevices();
+        const result = await devices.getDevices();
 
         if(result) {
-            console.log("Router Data ", data)
+            console.log("Router Data ", result)
             res.status(200).json({result})
         } else {
             res.status(404).json({})
