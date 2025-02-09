@@ -1,6 +1,13 @@
+/* General Styles */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Arial", sans-serif;
+}
 
+/* User Login Page */
 .userLogin-page {
-    background-color: orange;
+    background: linear-gradient(135deg, #ff8c00, #ff4500); /* Orange to Red gradient */
     display: grid;
     grid-template-columns: 1fr 1fr;
     padding: 20px;
@@ -8,79 +15,125 @@
     justify-content: center;
     align-items: center;
     margin: 20px auto;
-
+    gap: 20px;
+    max-width: 900px;
+    box-shadow: 0 4px 10px rgba(255, 140, 0, 0.3);
 }
 
+/* Package Section */
 .package {
-    background-color:chocolate;
-    padding: 15px;
-    height: 50vh;
+    background: linear-gradient(135deg, #d2691e, #8b4513); /* Chocolate shades */
+    padding: 20px;
+    min-height: 50vh;
     text-align: center;
-    width: 90%;
-   
+    width: 100%;
+    border-radius: 8px;
+    color: white;
+    font-weight: bold;
+    box-shadow: 0 4px 10px rgba(139, 69, 19, 0.4);
 }
 
-
+/* Login Form */
 .userLogin-form {
-    background-color: rgb(15, 11, 1);
+    background: #222; /* Dark theme */
     color: white;
-    padding: 15px;
+    padding: 20px;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    height: 50vh;
+    min-height: 50vh;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(196, 21, 12, 0.4);
+    box-shadow: 0 4px 8px rgba(255, 87, 51, 0.4);
+    width: 100%;
+    max-width: 400px;
+    margin: auto;
 }
 
-.userLogin-form input {
-    padding: 8px;
-    width: 40%;
-    border-radius: 4px;
-    
-}
-
-.error {
-    color: white;
-}
+.userLogin-form input,
 .userLogin-form select {
-    padding: 7px;
-    width: 40%;
-    border-radius: 4px;
-
+    padding: 10px;
+    width: 90%;
+    border-radius: 5px;
+    border: 1px solid #ff8c00;
+    margin-bottom: 10px;
+    font-size: 1rem;
 }
 
-.userLogin-form button {
-    padding: 7px;
-    width: 40%;
-    border-radius: 8px;
-    background-color: orange;
-    font-size: medium;
+.userLogin-form input:focus,
+.userLogin-form select:focus {
+    outline: none;
+    border-color: #ff4500;
+    box-shadow: 0 0 5px rgba(255, 69, 0, 0.7);
+}
 
+/* Error Message */
+.error {
+    color: #ff4d4d;
+    font-weight: bold;
+}
+
+/* Submit Button */
+.userLogin-form button {
+    padding: 10px;
+    width: 100%;
+    border-radius: 8px;
+    background: #ff8c00;
+    color: white;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
 }
 
 .userLogin-form button:hover {
-    border-radius: 4px;
-    background-color: rgb(143, 105, 36);
-
+    background: #ff4500;
+    box-shadow: 0 0 10px rgba(255, 69, 0, 0.7);
 }
 
+/* Back Button */
 .back-button {
-   padding: 5px;
-   width: 60%;
-   margin-left: 200px;
-   margin-top: 100px;
-   border-radius: 20px;
-   background-color: black;
-   color: white;
+    padding: 10px;
+    width: 100%;
+    max-width: 300px;
+    margin: 20px auto;
+    border-radius: 20px;
+    background: black;
+    color: white;
+    font-size: 1rem;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.3s;
+    border: none;
 }
 
 .back-button:hover {
-    background-color: white;
+    background: white;
     color: black;
- }
- 
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+}
 
+/* Responsive Design */
+@media (max-width: 768px) {
+    .userLogin-page {
+        grid-template-columns: 1fr;
+        padding: 15px;
+    }
 
+    .package {
+        min-height: 40vh;
+    }
 
+    .userLogin-form {
+        min-height: auto;
+    }
 
+    .userLogin-form input,
+    .userLogin-form select,
+    .userLogin-form button {
+        width: 100%;
+    }
+
+    .back-button {
+        width: 80%;
+    }
+}

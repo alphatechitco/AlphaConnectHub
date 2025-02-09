@@ -6,12 +6,16 @@ class Devices {
     }
 
 
-    async getDevices(){
+    async getDevices(device_id){
+        let query = supabase.from('devices').select('*')
+        if(device_id.length>0){
+            query = supabase.from('devices').select('*').eq('device_id', device_id)
+        }
 
-        const {data, error} = await supabase.from('devices').select('*')
+        const {data, error} = await query;
 
         if(error) {
-            console.error("Error While Fetching Devices")
+            console.error("Error While Fetching Devices", error)
             return;
         }
         if(data.length>0) {
@@ -19,6 +23,37 @@ class Devices {
             return data;
         }
 
+    }
+
+    async deleteDevice(device_id) {
+        try {
+            const {data, error} =  await supabase.from('devices').delete().eq('device_id', device_id);
+
+            if(error) {
+                console.error("Error deleting device:", error);
+                return { success: false, message: "Failed to delete device" };
+            }
+                console.log("Device deleted successfully!");
+                return { success: true, message: "Device deleted" };
+    
+        } catch (error) {
+            console.error("Unexpected error:", error);
+            return { success: false, message: "Unexpected error" };
+        }
+    }
+
+    async regDevice(user_id, profile_id, device_name, device_type, description, mqtt_topic){
+
+        const {data, error} = await supabase.from('devices').insert([{user_id,profile_id,device_name,device_type,description,mqtt_topic}]).select('device_id')
+
+        if(error) {
+            console.error("Error While Registering Device", error)
+            return {reg:false, device:data}
+        }
+        if(data.length>0) {
+            console.log("Mod Data",data)
+            return {reg:true, device:data}
+        }
 
     }
 }

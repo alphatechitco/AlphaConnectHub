@@ -1,0 +1,122 @@
+/* General Styling */
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    margin: 20px auto;
+    background-color: #f0f4f8;
+    min-height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Credential Container */
+.cred-container {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 90%;
+    max-width: 500px;
+    transition: transform 0.3s ease;
+}
+
+.cred-container:hover {
+    transform: translateY(-5px);
+}
+
+/* Buttons */
+button {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 10px 5px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Active Credentials Section */
+.active-creds {
+    background-color: #e9f7ef;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 20px;
+    text-align: left;
+    transition: all 0.3s ease-in-out;
+}
+
+.active-creds ul {
+    list-style: none;
+    padding: 0;
+}
+
+.active-creds li {
+    background-color: #f8f9fa;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+}
+
+/* Credential Form */
+.cred-set {
+    background-color: #f1f8ff;
+    padding: 20px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.cred-set label {
+    font-weight: bold;
+    color: #333;
+    text-align: left;
+}
+
+.cred-set input {
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.cred-set input:focus {
+    border-color: #007BFF;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Success Message */
+#successMessage {
+    color: green;
+    font-weight: bold;
+    margin-top: 10px;
+    transition: opacity 0.5s;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .cred-container {
+        padding: 20px;
+    }
+
+    .cred-set {
+        padding: 15px;
+    }
+
+    button {
+        padding: 8px 15px;
+    }
+}

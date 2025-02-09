@@ -1,93 +1,146 @@
+/* General Styles */
+body {
+    margin: 0;
+    padding: 20px;
+    font-family: "Arial", sans-serif;
+    justify-content: center;
+    align-items: center;
+}
 
-
-
+/* Main Intro Page */
 .intro-page {
-    background-color: black;
-    height: 100vh;
+    background: linear-gradient(135deg, #0a0a0a, #222); /* Subtle gradient for depth */
+    min-height: 100vh;
     color: white;
-    padding: 20px;
-    border-radius: 10px;
-
-}
-
-.intro-header {
-    background-color:orange;
-    padding: 20px;
-    height: 58vh;
-   
+    padding: 40px;
     border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-left: 300px;
 }
 
-.login-work {
-    background-color: brown;
-    padding: 5px;
-    width: 40%;
+/* Header Section */
+.intro-header {
+    background: linear-gradient(135deg, #ff8c00, #ff5733); /* Orange to Red gradient */
+    padding: 20px;
+    min-height: 58vh;
+    width: 100%;
+    max-width: 900px;
+    border-radius: 8px;
     text-align: center;
-    margin-left: 350px;
-    border-radius: 10px;
-}
-.login-work button{
-    background-color: black;
-    color: white;
-    padding: 10px;
-    border-radius: 5px;
-}
-.login-work button:hover{
-    border-color: red;
+    box-shadow: 0 4px 10px rgba(255, 140, 0, 0.3);
 }
 
 .intro-header h1 {
-    color: rgb(20, 5, 4);
-    font-family:Arial, Helvetica, sans-serif;
-    font-size: 2rem;
-    text-align: center;
-    
-
+    color: white;
+    font-size: 2.5rem;
+    margin-bottom: 10px;
 }
 
+/* Logo */
 .intro-logo {
-    width: 300px;
-    margin-left: 10px;
+    width: 250px;
+    transition: transform 0.3s ease-in-out;
 }
 
 .intro-logo:hover {
-    width: 300px;
-    margin-left: 10px;
     transform: scale(1.2);
 }
 
+/* Login Work (CTA Box) */
+.login-work {
+    background: linear-gradient(135deg, #8b0000, #ff4d4d); /* Deep red to light red */
+    padding: 15px;
+    width: 80%;
+    max-width: 400px;
+    text-align: center;
+    border-radius: 10px;
+    margin: 20px auto;
+    box-shadow: 0 4px 10px rgba(255, 0, 0, 0.3);
+}
+
+.login-work button {
+    background: #222;
+    color: white;
+    padding: 12px 18px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.login-work button:hover {
+    background: #ff4d4d;
+    color: white;
+    box-shadow: 0 0 10px rgba(255, 77, 77, 0.7);
+}
+
+/* Navigation Buttons */
 .process nav {
+    display: flex;
     gap: 10px;
     padding: 10px;
-    border-radius: 5px;
-}
-.process nav button {
-    background-color: black;
-    color: white;
-    padding: 10px;
-  
-    border-radius: 5px;
-}
-.process nav button:hover {
-    background-color: black;
-    color: white;
-    padding: 10px;
-    border-color: red;
-    border-radius: 5px;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
+.process nav button {
+    background: #333;
+    color: white;
+    padding: 12px 15px;
+    border: none;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+.process nav button:hover {
+    background: #ff5733;
+    color: white;
+    box-shadow: 0 0 8px rgba(255, 87, 51, 0.6);
+}
+
+/* Greeting Section */
 .greet {
-    background-color: rgb(231, 94, 15);
+    background: #e75e0f;
     text-align: center;
-    padding: 8px;
+    padding: 10px;
     margin-top: 20px;
     border-radius: 8px;
+    font-size: 1.2rem;
+    font-weight: bold;
 }
 
+/* Process Section */
 .process {
-    background-color: ;
-    
-    text-align: right;
-    margin-top: 0;
+    text-align: center;
+    margin-top: 20px;
 }
 
+/* Responsive Design */
+@media (max-width: 768px) {
+    .intro-header {
+        min-height: 50vh;
+        padding: 15px;
+    }
+
+    .intro-header h1 {
+        font-size: 2rem;
+    }
+
+    .login-work {
+        width: 90%;
+        padding: 10px;
+    }
+
+    .process nav {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .process nav button {
+        width: 80%;
+    }
+}

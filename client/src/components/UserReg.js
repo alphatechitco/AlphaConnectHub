@@ -39,10 +39,7 @@ const UserReg = ({setIsAuthenticated}) => {
             )
 
         const packageData = responose.data ;
-        console.log(packageData)
         
-        setPackageDetails(packageData)
-
         setRegisterData ((prevData) => ({
             ...prevData,            // registerData.package = packageData.package_id (**Wrong Way**)
             package_id : packageData.package_id,

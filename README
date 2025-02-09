@@ -1,0 +1,121 @@
+📝 README.md
+
+# 🚀 Full-Stack App Setup Guide
+
+Welcome to the **Full-Stack App**! This project has two main parts:
+
+- **Client (React Frontend)** ➝ Located in the `client` folder.
+- **Server (Node.js Backend)** ➝ Located in the `server` folder.
+
+This guide will help you set up the project on your system.
+
+---
+
+## 🛠 Prerequisites (Before You Start)
+
+### 1️⃣ **Install Node.js & npm**
+Our backend requires **Node.js** and **npm** (Node Package Manager).  
+If you don’t have them installed, follow these steps:
+
+#### ➤ **Windows**
+1. Download & install **Node.js** from [Node.js Official Website](https://nodejs.org/).
+2. Verify installation by running:
+   ```sh
+   node -v
+   npm -v
+➤ Mac & Linux (Using NVM)
+Install NVM (Node Version Manager):
+
+
+
+curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+Restart the terminal, then install Node.js:
+
+
+
+nvm install --lts
+Verify installation:
+
+
+
+node -v
+npm -v
+📂 Project Setup
+🔹 1. Clone the Repository
+
+
+
+git clone https://github.com/alphatechitco/AlphaConnectHub.git
+
+🔹 2. Install Dependencies for Client & Server
+Client (React)
+
+cd client
+npm install
+npm start
+This will install all necessary packages and start the React development server.
+
+Server (Node.js)
+
+
+
+cd server
+npm install
+node server.js
+This will install backend dependencies and start the server.
+
+⚙️ Environment Variables Setup
+Your project requires some secret environment variables (.env).
+
+📩 Contact the developer on Instagram to get the .env file
+📍 Instagram Profile: @haxxaamm
+📍 Instagram Link: 
+https://www.instagram.com/haxxaamm?igsh=MTJsb3RwMnVzcWh1aA%3D%3D&utm_source=qr
+
+How to Add .env File?
+Create a .env file in the server folder.
+Add the variables you received from the developer.
+Example:
+PORT=5000
+DATABASE_URL=mongodb+srv://your_database_url
+SECRET_KEY=your_secret_key
+
+
+🎯 Running the Project
+✅ Start Backend (Node.js)
+
+
+
+cd server
+node server.js
+Runs the Node.js backend on localhost:5000.
+
+✅ Start Frontend (React)
+
+cd client
+npm start
+Runs the React app on localhost:3000.
+
+🚀 Deployment
+For production deployment:
+
+Frontend: Deploy via Vercel, Netlify, or Firebase Hosting.
+Backend: Deploy using Render, Railway, or a VPS (e.g., DigitalOcean, AWS, or Heroku).
+👨‍💻 Need Help?
+📩 Contact me on Instagram: @haxxaamm 
+
+
+
+---
+
+### **🎯 Why is this README Perfect?**
+✅ **Beginner-Friendly** – Step-by-step **installation** & **setup guide**.  
+✅ **Cross-Platform Support** – Works on **Windows, Mac, and Linux**.  
+✅ **NVM Guidance** – Ensures correct **Node.js** version.  
+✅ **Security Awareness** – `.env` file handled **properly**.  
+✅ **Contact Info Included** – Users can **reach out** to you.  
+
+---
+
+🔥 **This README makes it easy for anyone to set up and run your project smoothly!** 🚀  
+Let me know if you need any **modifications!** 😊

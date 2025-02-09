@@ -35,11 +35,11 @@ router.post('/login', async (req, res) => {
         const result = await sf.loginIn(loginData)
 
         if (!result.account) {
-            res.status(404).json({success: false, account: false, message:"Invalid Credentials"})
+            return res.status(404).json({success: false, account: false, message:"Invalid Credentials"})
         }
 
         if (!result.success) {
-            res.status(400).json({success:false, account: true, message: "Invalid Password"})
+            return res.status(400).json({success:false, account: true, message: "Invalid Password"})
         }
 
         const user_id = result.user_id

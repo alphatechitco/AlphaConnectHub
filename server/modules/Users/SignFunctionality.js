@@ -1,4 +1,3 @@
-const { has } = require('immutable');
 const supabase = require('../../database/dbconfig')
 const bcryptjs = require('bcryptjs')
 
@@ -34,7 +33,6 @@ class SignFunctionality {
         }
         const user_id = data[0];
         return {success:true, message:"Registered Successfuly", user_id}
-
     }
 
 

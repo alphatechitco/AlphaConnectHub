@@ -1,56 +1,110 @@
-
+/* User Register Page */
 .userRegister-page {
-    background-color: orange;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 20px;
-    border-radius: 8px;
+    background: linear-gradient(135deg, #ff9800, #ff5722);
+    display: flex;
+    margin: 20px auto;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
-    margin: 20px auto;
-
-}
-
-.packages{
-    background-color: black;
-    padding: 15px;
-    height: 50vh;
-    text-align: center;
-    width: 90%;
+    padding: 30px;
     border-radius: 8px;
-   
+    gap: 20px;
+    flex-wrap: wrap; /* Ensures responsiveness */
 }
 
+/* Packages Section */
 
+
+
+
+/* User Registration Form */
 .userRegister-form {
     background-color: rgb(15, 11, 1);
     color: white;
-    padding: 15px;
+    padding: 20px;
     display: flex;
     flex-direction: column;
+    align-items: center;
     justify-content: center;
-    height: 50vh;
+    width: 100%;
+    max-width: 450px;
+    min-height: 300px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(196, 21, 12, 0.4);
 }
 
-.userRegister-form input {
-    padding: 8px;
-    width: 40%;
-    border-radius: 4px;
-    
-}
-
-.error {
-    color: white;
-}
+/* Form Inputs */
+.userRegister-form input,
 .userRegister-form select {
-    padding: 7px;
-    width: 40%;
-    border-radius: 4px;
-
+    padding: 10px;
+    width: 80%;
+    max-width: 300px;
+    border-radius: 6px;
+    border: 1px solid #ff5722;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    margin: 8px 0;
+    transition: all 0.3s ease;
 }
 
+/* Input Focus */
+.userRegister-form input:focus,
+.userRegister-form select:focus {
+    outline: none;
+    border-color: #ff9800;
+    background-color: rgba(255, 255, 255, 0.2);
+}
 
+/* Error Messages */
+.error {
+    color: #ffcccc;
+    font-size: 14px;
+    margin-top: 5px;
+}
 
+.success {
+    color: #100b0b;
+    font-size: 14px;
+    margin-top: 5px;
+}
 
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .userRegister-page {
+        flex-direction: column;
+        padding: 20px;
+    }
+
+    .packages,
+    .userRegister-form {
+        width: 100%;
+        max-width: 500px;
+    }
+}
+
+@media (max-width: 768px) {
+    .userRegister-page {
+        padding: 15px;
+    }
+
+    .userRegister-form input,
+    .userRegister-form select {
+        width: 90%;
+    }
+}
+
+@media (max-width: 480px) {
+    .userRegister-page {
+        padding: 10px;
+    }
+
+    .packages,
+    .userRegister-form {
+        max-width: 100%;
+    }
+
+    .userRegister-form input,
+    .userRegister-form select {
+        width: 100%;
+    }
+}

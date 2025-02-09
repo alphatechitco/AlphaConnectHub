@@ -1,47 +1,56 @@
-require('dotenv').config()
-const express = require('express')
-const cors = require('cors')
-const {exec} = require('child_process'); 
-const bodyParser = require('body-parser')
-const devicesRoute = require('./routes/devicesRoute')
-const userRoutes = require('./routes/userRoutes')
-const subscriptionRoute = require('./routes/subscriptionRoute')
-const realTimeUpdate = require('./routes/realTimeUpdate');
+require('dotenv').config();
+const express = require('express');
+const http = require('http');
+const { Server } = require('socket.io');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+const devicesRoute = require('./routes/devicesRoute');
+const userRoutes = require('./routes/userRoutes');
+const profileRoute = require('./routes/profileRoute');
+const subscriptionRoute = require('./routes/subscriptionRoute');
+const mqttRoute = require('./routes/mqttRoute');
 const { stdout, stderr } = require('process');
+const {initSocket,sendToFrontend} = require('./socketService')
 
 const app = express();
+const server = http.createServer(app);
+initSocket(server);
 
 
 app.use(bodyParser.json())
 
 app.use(cors({
     origin: 'http://localhost:3000',
-    methods: 'GET,POST',
-}))
+    methods: 'GET,POST,PUT,DELETE',
+}));
 
-exec('mosquitto -v', (error, stdout,stderr) => {
-    if(error){
-        console.error(`Error Starting starting Mosquito: ${error.message}`)
-        return;
-    }
-    console.log(`Mosquuito Started: ${stdout}`)
-    if(stderr) {
-        console.error(`Mosquitto stderr: ${stderr}`)
-    }
-})
+
+
 
 // User Related API Routing
-app.use('/user', userRoutes)
+app.use('/user', userRoutes);
 
 // Device Related API Routing
-app.use('/devices', devicesRoute)
+app.use('/devices', devicesRoute);
 
-app.use('/devices/realtime', realTimeUpdate)
 
 // Subscription Related API Routing
-app.use('/subscription', subscriptionRoute)
+app.use('/subscription', subscriptionRoute);
+
+app.use('/mqtt', mqttRoute);
+
+app.use('/profile', profileRoute);
 
 
-app.listen(3001, ()=>{
-    console.log("Server Side Is Functional At Port 3001")
-})
+
+
+
+module.exports = {
+sendToFrontend
+}
+
+server.listen(3001, () => {
+    console.log(`Server running on http://localhost:3001`);
+});
+
+

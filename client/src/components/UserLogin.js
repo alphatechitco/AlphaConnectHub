@@ -31,13 +31,13 @@ const UserLogin = ({setIsAuthenticated, setSelectedComponent }) =>{
 
         try {
 
-        const responose = await axios.post('http://localhost:3001/user/login', loginData, {
+        const response = await axios.post('http://localhost:3001/user/login', loginData, {
             headers : {
                 'Content-Type' : 'application/json',
             },
         })
 
-        const responseData = responose.data;
+        const responseData = response.data;
 
         if(responseData.success && responseData.token) {
             setSuccessMessage("Login Successful")
@@ -45,14 +45,40 @@ const UserLogin = ({setIsAuthenticated, setSelectedComponent }) =>{
             localStorage.setItem('user_id', responseData.user_id);
             setIsAuthenticated(true)
             setSelectedComponent("Devices")
+        } else if (!responseData.success && !responseData.account){
+            setErrors((prevData) => ({
+                ...prevData, 
+                Login : "Account Not Found",
+            }))
+        } else {
+           setErrors((prevData) =>({
+            ...prevData,
+            Login:"Invalid Password",
+           }))
         }
 
     } catch (error) {
-        console.log("Error While Logging In...")
-        setErrors((prevData) => ({
-            ...prevData, 
-            Login : "Error While Logging In",
-        }))
+        console.log("Error While Logging In...", error)
+        if (error.response) {
+            const backendError = error.response.data.message || "Unknown Error From Server"
+            setErrors((prevData) => ({
+                ...prevData,
+                Login:backendError,
+            }))
+        } else if (error.request) {
+            // No Response from Backend
+            setErrors((prevData) => ({
+                ...prevData,
+                Login: "No Response from Server",
+            }));
+        } else {
+            // Other Errors
+            setErrors((prevData) => ({
+                ...prevData,
+                Login: "Unexpected Error While Logging In",
+            }));
+        }
+       
     }
     }
 

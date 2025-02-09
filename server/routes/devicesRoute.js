@@ -7,10 +7,12 @@ router.get('/get-devices', async (req, res)=>{
 
     try{
         console.log("Api Triggered")
+
+        const device_id = req.body;
     
         const devices = new Devices();
 
-        const result = await devices.getDevices();
+        const result = await devices.getDevices(device_id);
 
         if(result) {
             console.log("Router Data ", result)
@@ -24,9 +26,38 @@ router.get('/get-devices', async (req, res)=>{
     }
 })
 
-router.post('reg-device', async (req, res)=>{
-    
+router.delete('/delete-device/:device_id', async (req, res) => {
     try {
+        console.log("API")
+        const device_id = req.params.device_id;
+
+        const devices = new Devices();
+        const result = await devices.deleteDevice(device_id);
+
+        if(result.success) {
+            res.status(200).json({delete:true})
+        } else if(!result.success) {
+            res.status(403).json({delete:false})
+        }
+    } catch (error) {
+        res.status(500).json({delete:false, message:"Could Not Delete Device"})
+    }
+})
+
+router.post('/reg-device', async (req, res)=>{
+    console.log("API Called ")
+    try {
+        const { user_id, profile_id, device_name, device_type, description, mqtt_topic } = req.body;
+        console.log(user_id, profile_id, device_name, device_type, description, mqtt_topic)
+        const devices = new Devices();
+
+        const result = await devices.regDevice(user_id,profile_id,device_name,device_type,description,mqtt_topic);
+
+        if(result.reg) {
+            res.status(200).json({result})
+        } else if(!result.reg) {
+            res.status(400).json({result})
+        }
 
     } catch (error) {
         console.error("Internal Server Error!")

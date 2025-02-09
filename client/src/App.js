@@ -1,6 +1,5 @@
 import './App.css';
 import Devices from './components/Devices';
-import Register from './components/Register';
 import Intro from './components/Intro';
 import UserReg from './components/UserReg';
 import Sidebar  from './components/StaticComponents/Sidebar';
@@ -8,6 +7,10 @@ import Header from './components/StaticComponents/Header';
 import React, { useState, useEffect } from 'react';
 import UserLogin from './components/UserLogin';
 import logo from './components/assets/AlphaConnectLogo.png'
+import GetServerAccess from './components/GetServerAccess'
+import AddDevice from './components/AddDevice';
+import ProfileForm from './components/Profiles';
+
 
 function App() {
   const [selectedComponent, setSelectedComponent] = useState(
@@ -16,8 +19,16 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(
     localStorage.getItem('isAuthenticated') === 'true'
   );
+  const [user_id, setUser_id] = useState(
+    localStorage.getItem('user_id')
+  );
 
-  const [logoutFlag, setLogoutFlag] = useState(false)
+
+  const [logoutFlag, setLogoutFlag] = useState(false);
+  const [workSpaceState, setWorkSpaceState] = useState(false);
+  const [selectedProfile,setSelectedProfile] = useState("")
+  console.log(selectedProfile)
+
 
   // Persist state changes to localStorage
   useEffect (() => {
@@ -25,10 +36,16 @@ function App() {
     localStorage.setItem('isAuthenticated', isAuthenticated)
   }, [selectedComponent, isAuthenticated])
 
+  useEffect(() => {
+
+  })
+
   useEffect (() => {
     if(logoutFlag) {
       localStorage.removeItem('selectedComponent')
       localStorage.removeItem('isAuthenticated')
+      localStorage.removeItem('token')
+      localStorage.removeItem('user_id')
       setSelectedComponent("")
     }
   }, [logoutFlag])
@@ -36,13 +53,17 @@ function App() {
   const renderComponent = () => {
     switch (selectedComponent) {
       case 'Devices':
-        return <Devices setSelectedComponent = {setSelectedComponent} />;
+        return <Devices setSelectedComponent = {setSelectedComponent} profile_id={selectedProfile} user_id={user_id} />;
       case 'Add Device':
-        return <Register />;
+        return <AddDevice profile_id={selectedProfile} user_id={user_id}/>;
+      case 'Profiles':
+        return <ProfileForm/>;
       case 'Register':
         return <UserReg setIsAuthenticated = {setIsAuthenticated} setSelectedComponent={setSelectedComponent}/>
       case 'Login':
         return <UserLogin setIsAuthenticated = {setIsAuthenticated} setSelectedComponent={setSelectedComponent}/>
+      case 'Get Server Access':
+        return <GetServerAccess selectedProfile={selectedProfile} />
       default:
         return <Intro setSelectedComponent={setSelectedComponent} />;
     }
@@ -61,7 +82,7 @@ function App() {
 
          {/* Right Column: Interal Navigation Options */}
          {!isIntroOrRegister && isAuthenticated && (  // Checking State Of Authentication Param (Variables)
-        <Sidebar setSelectedComponent={setSelectedComponent} setLogoutFlag={setLogoutFlag}/>
+        <Sidebar setSelectedComponent={setSelectedComponent} setLogoutFlag={setLogoutFlag} setSelectedProfile={setSelectedProfile} setWorkSpaceState={setWorkSpaceState}/>
         )}
         {/* Center Panel: Render Selected Component */}
         <div className="App-main">
@@ -75,7 +96,7 @@ function App() {
       </div>
 
       <footer>
-        <p>© 2024 <a href="">Alpha Connect Hub</a> - Owned and Developed by <a href="https://alphatechitco.netlify.app/">AlphaTech</a></p>
+        <p>© 2025 <a href="">Alpha Connect Hub</a> - Owned and Developed by <a href="https://alphatechitco.netlify.app/">AlphaTech</a></p>
         <p><a href="https://alphatechitco.netlify.app/">About Us</a> | <a href="https://www.instagram.com/alphatechltdco?igshid=MWtjanJrNzhmZjcx&utm_source=qr">Contact</a></p>
         
     </footer>
