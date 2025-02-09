@@ -14,7 +14,7 @@ import ProfileForm from './components/Profiles';
 
 function App() {
   const [selectedComponent, setSelectedComponent] = useState(
-    localStorage.getItem('selectedComponent') || ''
+    sessionStorage.getItem('selectedComponent') || ''
   );   // Track the selected component
   const [isAuthenticated, setIsAuthenticated] = useState(
     localStorage.getItem('isAuthenticated') === 'true'
@@ -32,7 +32,7 @@ function App() {
 
   // Persist state changes to localStorage
   useEffect (() => {
-    localStorage.setItem('selectedComponent', selectedComponent)
+    sessionStorage.setItem('selectedComponent', selectedComponent)
     localStorage.setItem('isAuthenticated', isAuthenticated)
   }, [selectedComponent, isAuthenticated])
 
@@ -42,7 +42,7 @@ function App() {
 
   useEffect (() => {
     if(logoutFlag) {
-      localStorage.removeItem('selectedComponent')
+      sessionStorage.removeItem('selectedComponent')
       localStorage.removeItem('isAuthenticated')
       localStorage.removeItem('token')
       localStorage.removeItem('user_id')
