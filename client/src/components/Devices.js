@@ -231,6 +231,7 @@ void loop() {
             <p><strong>MAC:</strong> {selectedDevice.mac_address}</p>
             <p><strong>IP:</strong> {selectedDevice.ip_address}</p>
             <p><strong>Status:</strong> {selectedDevice.status}</p>
+            <p><strong></strong></p>
             <button onClick={() => downloadCode(selectedDevice)}>Download Code (.cpp)</button>
             <button onClick={() => setIsAuthModalOpen(true)}>View Operational Data</button>
             <button onClick={() => handleDeviceDeletion(selectedDevice.device_id)}>Delete Device</button>

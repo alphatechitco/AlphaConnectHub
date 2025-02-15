@@ -37,6 +37,7 @@ const ProfileForm = () => {
 
   return (
     <div className="profile-form-container" >
+      <p><strong>Profiles Allows U To Have Individuality And Organized Listing Of <br/> Devices To Manage Your Devices Easily</strong></p>
       <h2>Create a New Profile</h2>
       <form onSubmit={handleSubmit} className='form'>
         <label>Profile Name:</label>

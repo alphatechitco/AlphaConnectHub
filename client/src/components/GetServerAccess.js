@@ -4,8 +4,8 @@ import './GetServerAccess.css';
 
 const GetServerAccess = ({ selectedProfile }) => {
     const [connectionCred, setConnectionCred] = useState({ username: "", password: "" });
-    const [activeCreds, setActiveCreds] = useState("");
-    const [newPassword,setNewPassword] = useState("");
+    const [activeCreds, setActiveCreds] = useState([]);
+    const [newPassword, setNewPassword] = useState("");
     const [resetPrompt, setResetPrompt] = useState(false);
     const [showCreds, setShowCreds] = useState(false);
     const [successMessage, setSuccessMessage] = useState("");
@@ -22,11 +22,10 @@ const GetServerAccess = ({ selectedProfile }) => {
                 const user_id = localStorage.getItem('user_id');
                 const creds_mode = 'DS';
                 try {
-                    const response = await axios.post("http://localhost:3001/mqtt/get-details", { user_id, profile_id, creds_mode});
+                    const response = await axios.post("http://localhost:3001/mqtt/get-details", { user_id, profile_id, creds_mode });
                     setActiveCreds(response.data.creds);
-                    console.log("Adjusted", activeCreds)
                 } catch (error) {
-                    console.error("Error fetching Authentications:", error);
+                    console.error("Error fetching credentials:", error);
                 }
             };
             fetchCreds();
@@ -35,17 +34,17 @@ const GetServerAccess = ({ selectedProfile }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setSuccessMessage("Authenticating With Servers...");
+        setSuccessMessage("Authenticating With Server...");
         try {
             const user_id = localStorage.getItem('user_id');
             if (!user_id) {
-                alert("Login Expired!");
+                alert("Login Expired! Please log in again.");
                 return;
             }
 
             const submissionData = {
                 ...connectionCred,
-                user_id: user_id,
+                user_id,
                 selectedProfile
             };
 
@@ -56,81 +55,70 @@ const GetServerAccess = ({ selectedProfile }) => {
             );
 
             if (response.data.success) {
-                setSuccessMessage("Authenticated & Registered!");
-                setShowCreds(true); // Refresh credentials after adding new
+                setSuccessMessage("Device Authentication Successful! Your credentials are now active.");
+                setShowCreds(true);
             } else {
                 setSuccessMessage("Authentication Failed. Try Again.");
             }
         } catch (error) {
-            console.error("Error", error);
+            console.error("Error:", error);
             setSuccessMessage("An error occurred during authentication.");
         }
     };
 
-    const handleDelete = async (reg_id) => {
-        try {
-            const response = await axios.delete(`http://localhost:3001/mqtt/delete-cred/${reg_id}`);
-            if (response.data.success) {
-                setActiveCreds((prevCreds) => prevCreds.filter(cred => cred.id !== reg_id));
-                setSuccessMessage("Credential Deleted Successfully!");
-            }
-        } catch (error) {
-            console.error("Error deleting credential:", error);
-        }
-    };
     const handleResetPassword = async (reg_id) => {
         try {
-            const response = await axios.put(`http://localhost:3001/mqtt/reset-cred/${reg_id}`, {password:newPassword});
+            const response = await axios.put(`http://localhost:3001/mqtt/reset-cred/${reg_id}`, { password: newPassword });
             if (response.data.reset) {
-                setActiveCreds((prevCreds) => prevCreds.filter(cred => cred.id !== reg_id));
                 setSuccessMessage("Password Reset Successfully!");
             }
         } catch (error) {
-            console.error("Error Reseting credential:", error);
-        }
-    };
-
-    const handleUpdate = async (reg_id, updatedUsername, updatedPassword) => {
-        try {
-            const response = await axios.put(`http://localhost:3001/mqtt/update-cred/${reg_id}`, {
-                username: updatedUsername,
-                password: updatedPassword
-            });
-            if (response.data.success) {
-                setSuccessMessage("Credential Updated Successfully!");
-                setShowCreds(true); // Refresh credentials after update
-            }
-        } catch (error) {
-            console.error("Error updating credential:", error);
+            console.error("Error resetting credential:", error);
         }
     };
 
     return (
-        <main>
-            <div className="cred-container">
-                <button onClick={() => setShowCreds(true)}>Show My Authentications</button>
+        <main className="server-access-container">
+            <section className="info-section">
+                <h2>🔗 Get Server Access & Connect Your Device</h2>
+                <p>
+                    By obtaining server access, you will receive a **Username** and **Password** that will allow your IoT device to
+                    connect securely to the **AlphaConnectHub Server**. Once connected, your device can **send real-time data** and view **live data streams**.
+                </p>
 
-                {showCreds && activeCreds && (
+                <h3>📌 Steps to Connect Your Device:</h3>
+                <ul>
+                    <li>1️⃣ Create a **Username** and **Password** using the form given.</li>
+                    <li>2️⃣ Register your credentials to activate server access.</li>
+                    <li>3️⃣ Use the credentials in your device’s MQTT/IoT configuration.</li>
+                    <li>4️⃣ Start sending and monitoring real-time data instantly!</li>
+                </ul>
+            </section>
+
+            <div className="cred-container">
+                <button className="show-auth-btn" onClick={() => setShowCreds(true)}>🔍 Show My Credentials</button>
+
+                {showCreds && activeCreds.length > 0 && (
                     <div className="active-creds">
-                        <h3>Active Credentials:</h3>
+                        <h3>🔐 Active Credentials:</h3>
                         <ul>
                             {activeCreds.map((cred) => (
-                                <li key={cred.reg_id}>
+                                <li key={cred.reg_id} className="cred-item">
                                     <strong>Username:</strong> {cred.username} <br />
-                                    {resetPrompt && activeCreds && (
+                                    <strong>Password:</strong> *********  
+                                    <button className="reset-btn" onClick={() => setResetPrompt(true)}>🔄 Reset Password</button>
+
+                                    {resetPrompt && (
                                         <div className="reset-box">
-                                        <input
-                                        type="password"
-                                        name="newpassword"
-                                        placeholder="Type New Password"
-                                        onChange={(e) => setNewPassword(e.target.value)}
-                                        />
-                                        <p id="successMessage">{successMessage}</p>
-                                        <button onClick={() => handleResetPassword(cred.reg_id)}>Reset Password</button>
+                                            <input
+                                                type="password"
+                                                name="newpassword"
+                                                placeholder="Type New Password"
+                                                onChange={(e) => setNewPassword(e.target.value)}
+                                            />
+                                            <button onClick={() => handleResetPassword(cred.reg_id)}>Confirm Reset</button>
                                         </div>
                                     )}
-                                    <strong>Password:</strong> *********  
-                                    <button onClick={() => setResetPrompt(true)}>Reset Password</button>
                                 </li>
                             ))}
                         </ul>
@@ -138,7 +126,7 @@ const GetServerAccess = ({ selectedProfile }) => {
                 )}
 
                 <form className="cred-set" onSubmit={handleSubmit}>
-                    <h3>Create A Username And Password For Connecting Device</h3>
+                    <h3>🛠 Create Your Device Credentials</h3>
                     <label>Set Username:</label>
                     <input
                         name="username"
@@ -157,7 +145,7 @@ const GetServerAccess = ({ selectedProfile }) => {
                         placeholder="Enter Password"
                     />
 
-                    <button type="submit">Register For Connection</button>
+                    <button type="submit">🚀 Register & Connect</button>
                     <p id="successMessage">{successMessage}</p>
                 </form>
             </div>

@@ -6,7 +6,7 @@ const { sendToFrontend } = require('../../socketService');
 
 class HandleData {
     constructor() {
-        this.mqtt_url = "ws://13.95.129.149:8083/mqtt";
+        this.mqtt_url = "ws://34.69.42.86:8083/mqtt";
         this.hc = new handleCred();
         this.dv = new Devices();
         this.client = null;

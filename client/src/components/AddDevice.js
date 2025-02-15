@@ -6,7 +6,8 @@ const AddDevice = ({ user_id, profile_id }) => {
     const [deviceDetails, setDeviceDetails] = useState({
         device_name: "",
         device_type: "",
-        description: ""
+        description: "",
+        device_handler: ""
     });
     console.log("prof", profile_id)
     const [successMessage, setSuccessMessage] = useState("");
@@ -24,11 +25,13 @@ const AddDevice = ({ user_id, profile_id }) => {
         "GPS Module",
         "Smart Plug",
         "Relay Module",
-        "ESP32",
-        "Arduino",
-        "Raspberry Pi",
         "Other"
     ];
+    const deviceHandlers = [
+        "ESP-32",
+        "Arduino",
+        "Raspberry-Pi",
+    ]
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -91,6 +94,19 @@ const AddDevice = ({ user_id, profile_id }) => {
                     <option value="">Select Device Type</option>
                     {deviceTypes.map((type, index) => (
                         <option key={index} value={type}>{type}</option>
+                    ))}
+                </select>
+
+                <label>Device Handler:</label>
+                <select
+                    name="device_handler"
+                    value={deviceDetails.device_handler}
+                    onChange={handleChange}
+                    required
+                >
+                    <option value="">Select Device Handler</option>
+                    {deviceHandlers.map((handler, index) => (
+                        <option key={index} value={handler}>{handler}</option>
                     ))}
                 </select>
 

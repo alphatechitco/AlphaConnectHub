@@ -18,7 +18,7 @@ main {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     text-align: center;
     width: 90%;
-    max-width: 500px;
+    max-width: 550px;
     transition: transform 0.3s ease;
 }
 
@@ -62,10 +62,13 @@ button:hover {
 
 .active-creds li {
     background-color: #f8f9fa;
-    padding: 10px;
+    padding: 12px;
     margin-bottom: 10px;
     border: 1px solid #dee2e6;
     border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
 
 /* Credential Form */
@@ -75,7 +78,7 @@ button:hover {
     border-radius: 10px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
     margin-top: 20px;
 }
 
@@ -86,7 +89,7 @@ button:hover {
 }
 
 .cred-set input {
-    padding: 8px;
+    padding: 10px;
     border-radius: 6px;
     border: 1px solid #ccc;
     outline: none;
@@ -96,6 +99,32 @@ button:hover {
 .cred-set input:focus {
     border-color: #007BFF;
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Reset Password Box */
+.reset-box {
+    background-color: #fffbeb;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #ffeeba;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.reset-box input {
+    padding: 8px;
+    width: 100%;
+    margin-bottom: 10px;
+    border: 1px solid #f8c102;
+    border-radius: 6px;
+}
+
+.reset-box button {
+    background-color: #ffa502;
+}
+
+.reset-box button:hover {
+    background-color: #e67e22;
 }
 
 /* Success Message */
