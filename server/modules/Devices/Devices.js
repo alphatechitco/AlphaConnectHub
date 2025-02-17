@@ -8,9 +8,11 @@ class Devices {
 
     async getDevices(device_id,profile_id){
        try {
-        console.log("Profile Id", profile_id)
-        let query = supabase.from('devices').select('*').eq('profile_id', profile_id);
-        if(device_id.length>0){
+        let query
+        if (profile_id!=null){
+        query = supabase.from('devices').select('*').eq('profile_id', profile_id);
+        }
+        if(device_id != null){
             query = supabase.from('devices').select('*').eq('device_id', device_id);
         }
 

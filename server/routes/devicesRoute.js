@@ -11,8 +11,9 @@ router.get('/get-devices', async (req, res)=>{
         const {profile_id} = req.query;
         console.log("Prof", profile_id)
         const devices = new Devices();
+        const device_id = null;
 
-        const result = await devices.getDevices(profile_id);
+        const result = await devices.getDevices(device_id,profile_id);
 
         if(!result.fetch) {
             res.status(404).json({fetch:false,result:[]})

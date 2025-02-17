@@ -20,6 +20,7 @@ class HandleData {
         try {
             const credentials = await this.hc.getCred(user_id, profile_id, "WS", password_flag);
             const deviceData = await this.dv.getDevices(device_id,profile_id);
+           
             const authenticated = await bcrypt.compare(password, credentials.details[0].password_hash);
 
             if (!authenticated) {
@@ -27,7 +28,7 @@ class HandleData {
                 return res.status(401).json({ auth: false });
             }
 
-            await this.subscribe(credentials, password, deviceData);
+            await this.subscribe(credentials, password, deviceData.result);
             return res.status(200).json({ auth: true });
 
         } catch (err) {
