@@ -19,7 +19,7 @@ class HandleData {
     async authenticateClient(res, user_id, profile_id, username, password, password_flag, device_id) {
         try {
             const credentials = await this.hc.getCred(user_id, profile_id, "WS", password_flag);
-            const deviceData = await this.dv.getDevices(device_id);
+            const deviceData = await this.dv.getDevices(device_id,profile_id);
             const authenticated = await bcrypt.compare(password, credentials.details[0].password_hash);
 
             if (!authenticated) {
