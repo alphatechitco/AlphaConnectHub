@@ -40,6 +40,8 @@ const UserReg = ({setIsAuthenticated}) => {
 
         const packageData = responose.data ;
 
+        setPackageDetails(packageData);
+
         setRegisterData ((prevData) => ({
             ...prevData,            // registerData.package = packageData.package_id (**Wrong Way**)
             package_id : packageData.package_id,
@@ -93,6 +95,7 @@ const UserReg = ({setIsAuthenticated}) => {
 
         console.log("API Step")
         try {
+            setSuccessMessage("Registering With Servers...")
          
         const response = await axios.post('http://localhost:3001/user/register', registerData, {
             headers :{
@@ -130,7 +133,7 @@ const UserReg = ({setIsAuthenticated}) => {
         <div className="userRegister-page">
             <h2>GET YOUR ALPHA CONNECT HUB</h2>
             <div className="packages">
-                {packageDetails && <h3>{packageDetails.package}</h3>}
+                {packageDetails && <h3 className="package-name">{packageDetails.package}</h3>}
             </div>
             <form onSubmit={handleSubmit} className="userRegister-form">
 

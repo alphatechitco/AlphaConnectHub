@@ -125,12 +125,13 @@ body {
 
     .userLogin-form {
         min-height: auto;
+        width: 80%;
     }
 
     .userLogin-form input,
     .userLogin-form select,
     .userLogin-form button {
-        width: 100%;
+        width: 80%;
     }
 
     .back-button {

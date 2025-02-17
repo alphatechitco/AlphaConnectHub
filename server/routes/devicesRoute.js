@@ -7,21 +7,21 @@ router.get('/get-devices', async (req, res)=>{
 
     try{
         console.log("Api Triggered")
-
-        const device_id = req.body;
-    
+        console.log("Req Dev ", req.query)
+        const {profile_id} = req.query;
+        console.log("Prof", profile_id)
         const devices = new Devices();
 
-        const result = await devices.getDevices(device_id);
+        const result = await devices.getDevices(profile_id);
 
-        if(result) {
+        if(!result.fetch) {
+            res.status(404).json({fetch:false,result:[]})
+        } else {
             console.log("Router Data ", result)
             res.status(200).json({result})
-        } else {
-            res.status(404).json({})
         }
     } catch (error) {
-        console.error("Internal Server Error!")
+        console.error("Internal Server Error!", error)
         res.status(500).json({message:"Internal Server Error!"})
     }
 })

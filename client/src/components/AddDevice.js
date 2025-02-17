@@ -1,17 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useEffect} from "react";
 import axios from "axios";
 import './AddDevice.css';
 
-const AddDevice = ({ user_id, profile_id }) => {
+const AddDevice = ({profile_id, setIsAuthenticated, setSelectedComponent}) => {
     const [deviceDetails, setDeviceDetails] = useState({
         device_name: "",
         device_type: "",
         description: "",
         device_handler: ""
     });
+    const [user_id, setUser_id] = useState(null);
     console.log("prof", profile_id)
     const [successMessage, setSuccessMessage] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
+
+    useEffect(() => {
+        const checkAuthentication = async () => {
+          try {
+            const response = await axios.get('http://localhost:3001/protected/protected-route', {withCredentials:true})
+    
+            if(response.data.success) {
+              setIsAuthenticated(true);
+              setUser_id(response.data.user_id);
+            } else {
+              setIsAuthenticated(false);
+              setSelectedComponent("")
+              setUser_id(null);
+            }
+          } catch (error) {
+            console.error("Auth verification failed, ", error);
+            setIsAuthenticated(false);
+            setUser_id(null);
+          }
+        }
+        checkAuthentication();
+    }, []);
 
     const deviceTypes = [
         "Temperature Sensor",
@@ -47,12 +70,14 @@ const AddDevice = ({ user_id, profile_id }) => {
         const mqtt_topic = generateMQTTTopic();
 
         try {
+            setSuccessMessage("Authenticating With Servers...");
             const response = await axios.post("http://localhost:3001/devices/reg-device", {
                 ...deviceDetails,
                 user_id,
                 profile_id,
                 mqtt_topic
             });
+           
 
             if (response.data.result.reg) {
                 setSuccessMessage("✅ Device added successfully!");

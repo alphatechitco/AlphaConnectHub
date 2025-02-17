@@ -44,8 +44,14 @@ router.post('/login', async (req, res) => {
 
         const user_id = result.user_id
         const token = tokenWork.generateToken({user_id});
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: false,   // false (localhost) true (https)
+            sameSite:'strict',
+            maxAge:'3600000'
+        })
         console.log("Router 200")
-        res.status(200).json({success:true, account: true, user_id, token, message:"Login Successful"})
+        res.status(200).json({success:true, account: true, message:"Login Successful"})
 
 
     } catch (error) {

@@ -159,17 +159,25 @@ footer p a:hover {
 
 @media (max-width: 768px) {
   .App {
-      padding: 10px;
+      padding: 0px;
+      
   }
 
   .App-header {
       padding: 12px;
+      width: 100%;
       font-size: 1.2rem;
   }
 
   .app-logo {
       width: 150px;
   }
+  .App-sidebar, 
+  .profiles {
+    width: 91%;
+    flex: none;
+    margin-bottom: 20px;
+}
 
   .profiles li {
       font-size: 0.9rem;
@@ -177,6 +185,7 @@ footer p a:hover {
 
   .App-sidebar li {
       font-size: 0.9rem;
+      width: 90%;
   }
 
   footer {

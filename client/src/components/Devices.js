@@ -5,7 +5,8 @@ import { io } from "socket.io-client";
 
 const socket = io("http://localhost:3001"); // Establish the connection once globally
 
-const Devices = ({ setSelectedComponent, profile_id, user_id }) => {
+const Devices = ({ setSelectedComponent, profile_id, setIsAuthenticated,setLogoutFlag}) => {
+  const [user_id, setUser_id] = useState("")
   const [devices, setDevices] = useState([]);
   const [selectedDevice, setSelectedDevice] = useState(null);
   const [mqtt, setMQTT] = useState(true)
@@ -21,6 +22,32 @@ const Devices = ({ setSelectedComponent, profile_id, user_id }) => {
 
     
   }
+
+
+  useEffect(() => {
+    const checkAuthentication = async () => {
+      try {
+        const response = await axios.get('http://localhost:3001/protected/protected-route', {withCredentials:true})
+
+        if(response.data.success) {
+          setIsAuthenticated(true);
+          setUser_id(response.data.user_id);
+        } else {
+          setIsAuthenticated(false);
+          setLogoutFlag(true);
+          setSelectedComponent("")
+          setUser_id(null);
+        }
+      } catch (error) {
+        console.error("Auth verification failed, ", error);
+        setIsAuthenticated(false);
+        setSelectedComponent("")
+        setLogoutFlag(false);
+        setUser_id(null);
+      }
+    }
+    checkAuthentication();
+}, []);
   useEffect (() => {
    if (!mqtt) {
     closeConnection();
@@ -28,16 +55,28 @@ const Devices = ({ setSelectedComponent, profile_id, user_id }) => {
 
   }, [mqtt])
   useEffect(() => {
+    console.log("Updated Devices:", devices);
+  }, [devices]); // This ensures you see the latest devices state
+  
+  useEffect(() => {
     const fetchDevices = async () => {
+      if (!profile_id || !user_id) return;
       try {
-        const response = await axios.get("http://localhost:3001/devices/get-devices");
-        setDevices(response.data.result);
+        console.log("Attached Prof", profile_id)
+        const response = await axios.get(`http://localhost:3001/devices/get-devices?profile_id=${profile_id}&_=${new Date().getTime()}`);
+        if(response.data){
+          console.log("Devices Fetch")
+          setDevices([]);
+          setDevices(response.data.result.result);
+        }
       } catch (error) {
         console.error("Error fetching devices:", error);
       }
     };
+    
 
     const fetchConnectionDetails = async () => {
+      if (!profile_id || !user_id) return;
       if (profile_id && user_id) {
         try {
           const response = await axios.post("http://localhost:3001/mqtt/get-details", {

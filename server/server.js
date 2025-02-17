@@ -4,11 +4,13 @@ const http = require('http');
 const { Server } = require('socket.io');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const devicesRoute = require('./routes/devicesRoute');
 const userRoutes = require('./routes/userRoutes');
 const profileRoute = require('./routes/profileRoute');
 const subscriptionRoute = require('./routes/subscriptionRoute');
 const mqttRoute = require('./routes/mqttRoute');
+const protectedRoute = require('./routes/protectedRoute');
 const { stdout, stderr } = require('process');
 const {initSocket,sendToFrontend} = require('./socketService')
 
@@ -18,10 +20,12 @@ initSocket(server);
 
 
 app.use(bodyParser.json())
+app.use(cookieParser())
 
 app.use(cors({
     origin: 'http://localhost:3000',
     methods: 'GET,POST,PUT,DELETE',
+    credentials:true,
 }));
 
 
@@ -40,6 +44,8 @@ app.use('/subscription', subscriptionRoute);
 app.use('/mqtt', mqttRoute);
 
 app.use('/profile', profileRoute);
+
+app.use('/protected', protectedRoute);
 
 
 

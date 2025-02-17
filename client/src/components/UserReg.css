@@ -14,8 +14,17 @@
 
 /* Packages Section */
 
-
-
+.package-name{
+    background-color: black;
+    color: yellow;
+    padding: 10px;
+    border-radius: 4px;
+}
+.success{
+    color: black;
+    font-size: large;
+    font-weight: bold;
+}
 
 /* User Registration Form */
 .userRegister-form {
@@ -100,7 +109,7 @@
 
     .packages,
     .userRegister-form {
-        max-width: 100%;
+        max-width: 80%;
     }
 
     .userRegister-form input,

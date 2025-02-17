@@ -2,8 +2,10 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import './GetServerAccess.css';
 
-const GetServerAccess = ({ selectedProfile }) => {
+const GetServerAccess = ({ selectedProfile,setSelectedComponent}) => {
     const [connectionCred, setConnectionCred] = useState({ username: "", password: "" });
+    const [isAuthenticated,setIsAuthenticated] = useState(false);
+    const [user_id, setUser_id] = useState(null);
     const [activeCreds, setActiveCreds] = useState([]);
     const [newPassword, setNewPassword] = useState("");
     const [resetPrompt, setResetPrompt] = useState(false);
@@ -14,6 +16,27 @@ const GetServerAccess = ({ selectedProfile }) => {
         const { name, value } = e.target;
         setConnectionCred((prevData) => ({ ...prevData, [name]: value }));
     };
+    useEffect(() => {
+        const checkAuthentication = async () => {
+          try {
+            const response = await axios.get('http://localhost:3001/protected/protected-route', {withCredentials:true})
+    
+            if(response.data.success) {
+              setIsAuthenticated(true);
+              setUser_id(response.data.user_id);
+            } else {
+              setIsAuthenticated(false);
+              setSelectedComponent("")
+              setUser_id(null);
+            }
+          } catch (error) {
+            console.error("Auth verification failed, ", error);
+            setIsAuthenticated(false);
+            setUser_id(null);
+          }
+        }
+        checkAuthentication();
+    }, []);
 
     useEffect(() => {
         if (showCreds) {

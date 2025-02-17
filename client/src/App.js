@@ -43,9 +43,7 @@ function App() {
   useEffect (() => {
     if(logoutFlag) {
       sessionStorage.removeItem('selectedComponent')
-      localStorage.removeItem('isAuthenticated')
-      localStorage.removeItem('token')
-      localStorage.removeItem('user_id')
+      console.log("LogOutttttt", logoutFlag)
       setSelectedComponent("")
     }
   }, [logoutFlag])
@@ -53,17 +51,17 @@ function App() {
   const renderComponent = () => {
     switch (selectedComponent) {
       case 'Devices':
-        return <Devices setSelectedComponent = {setSelectedComponent} profile_id={selectedProfile} user_id={user_id} />;
+        return <Devices setSelectedComponent = {setSelectedComponent} profile_id={selectedProfile} setIsAuthenticated={setIsAuthenticated} setLogoutFlag={setLogoutFlag} />;
       case 'Add Device':
-        return <AddDevice profile_id={selectedProfile} user_id={user_id}/>;
+        return <AddDevice profile_id={selectedProfile} setSelectedComponent={setSelectedComponent} setIsAuthenticated={setIsAuthenticated}/>;
       case 'Profiles':
-        return <ProfileForm/>;
+        return <ProfileForm setSelectedComponent={setSelectedComponent}/>;
       case 'Register':
         return <UserReg setIsAuthenticated = {setIsAuthenticated} setSelectedComponent={setSelectedComponent}/>
       case 'Login':
         return <UserLogin setIsAuthenticated = {setIsAuthenticated} setSelectedComponent={setSelectedComponent}/>
       case 'Get Server Access':
-        return <GetServerAccess selectedProfile={selectedProfile} />
+        return <GetServerAccess selectedProfile={selectedProfile} setSelectedComponent={setSelectedComponent} />
       default:
         return <Intro setSelectedComponent={setSelectedComponent} />;
     }

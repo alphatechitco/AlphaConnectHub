@@ -1,5 +1,6 @@
 .add-device-container {
-    width: 400px;
+    width: 90%;  /* Makes it responsive */
+    max-width: 400px;  /* Prevents it from getting too large */
     margin: 20px auto;
     padding: 20px;
     background-color: #f9f9f9;
@@ -11,6 +12,7 @@
 .add-device-container h2 {
     text-align: center;
     color: #333;
+    font-size: 1.5rem;  /* Responsive heading */
 }
 
 form {
@@ -24,21 +26,21 @@ label {
 }
 
 input, textarea {
-    padding: 8px;
+    padding: 10px; /* Bigger touch area */
     margin-top: 5px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    font-size: 14px;
+    font-size: 16px; /* Better readability */
 }
 
 textarea {
     resize: vertical;
-    min-height: 80px;
+    min-height: 100px; /* More space for text */
 }
 
 button {
     margin-top: 15px;
-    padding: 10px;
+    padding: 12px;
     background-color: #007bff;
     color: white;
     border: none;
@@ -46,18 +48,29 @@ button {
     cursor: pointer;
     font-weight: bold;
     transition: background-color 0.3s ease;
+    font-size: 16px; /* Easier to tap */
 }
 
 button:hover {
     background-color: #0056b3;
 }
 
-.success {
-    color: green;
+.success, .error {
     text-align: center;
+    font-size: 14px;
 }
 
-.error {
-    color: red;
-    text-align: center;
+@media (max-width: 480px) {
+    .add-device-container {
+        width: 95%; /* Uses more screen space */
+        padding: 15px; /* Less padding for small screens */
+    }
+
+    input, textarea {
+        font-size: 14px;
+    }
+
+    button {
+        font-size: 14px;
+    }
 }

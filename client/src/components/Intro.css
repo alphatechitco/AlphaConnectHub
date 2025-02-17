@@ -3,29 +3,32 @@ body {
     margin: 0;
     padding: 20px;
     font-family: "Arial", sans-serif;
-    justify-content: center;
+    display: flex;
+    flex-direction: column;
     align-items: center;
+    background: #0a0a0a;
 }
 
 /* Main Intro Page */
 .intro-page {
-    background: linear-gradient(135deg, #0a0a0a, #222); /* Subtle gradient for depth */
+    background: linear-gradient(135deg, #0a0a0a, #222);
     min-height: 100vh;
     color: white;
-    padding: 40px;
+    padding: 40px 20px;
     border-radius: 8px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin-left: 300px;
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
 }
 
 /* Header Section */
 .intro-header {
-    background: linear-gradient(135deg, #ff8c00, #ff5733); /* Orange to Red gradient */
+    background: linear-gradient(135deg, #ff8c00, #ff5733);
     padding: 20px;
-    min-height: 58vh;
     width: 100%;
     max-width: 900px;
     border-radius: 8px;
@@ -35,13 +38,15 @@ body {
 
 .intro-header h1 {
     color: white;
-    font-size: 2.5rem;
+    font-size: 2.2rem;
     margin-bottom: 10px;
+    word-wrap: break-word;
 }
 
 /* Logo */
 .intro-logo {
-    width: 250px;
+    width: 220px;
+    max-width: 100%;
     transition: transform 0.3s ease-in-out;
 }
 
@@ -51,10 +56,10 @@ body {
 
 /* Login Work (CTA Box) */
 .login-work {
-    background: linear-gradient(135deg, #8b0000, #ff4d4d); /* Deep red to light red */
+    background: linear-gradient(135deg, #8b0000, #ff4d4d);
     padding: 15px;
     width: 80%;
-    max-width: 400px;
+    max-width: 300px;
     text-align: center;
     border-radius: 10px;
     margin: 20px auto;
@@ -64,21 +69,27 @@ body {
 .login-work button {
     background: #222;
     color: white;
-    padding: 12px 18px;
+    padding: 14px 20px;
     border: none;
-    border-radius: 5px;
+    border-radius: 6px;
     font-size: 1rem;
     cursor: pointer;
     transition: 0.3s;
+    width: 100%;
+    max-width: 200px;
 }
 
 .login-work button:hover {
     background: #ff4d4d;
-    color: white;
     box-shadow: 0 0 10px rgba(255, 77, 77, 0.7);
 }
 
 /* Navigation Buttons */
+.process {
+    text-align: center;
+    margin-top: 20px;
+}
+
 .process nav {
     display: flex;
     gap: 10px;
@@ -90,15 +101,16 @@ body {
 .process nav button {
     background: #333;
     color: white;
-    padding: 12px 15px;
+    padding: 12px 16px;
     border: none;
     border-radius: 5px;
+    font-size: 1rem;
     transition: 0.3s;
+    min-width: 120px;
 }
 
 .process nav button:hover {
     background: #ff5733;
-    color: white;
     box-shadow: 0 0 8px rgba(255, 87, 51, 0.6);
 }
 
@@ -106,33 +118,31 @@ body {
 .greet {
     background: #e75e0f;
     text-align: center;
-    padding: 10px;
+    padding: 12px;
     margin-top: 20px;
     border-radius: 8px;
     font-size: 1.2rem;
     font-weight: bold;
 }
 
-/* Process Section */
-.process {
-    text-align: center;
-    margin-top: 20px;
-}
-
 /* Responsive Design */
 @media (max-width: 768px) {
     .intro-header {
-        min-height: 50vh;
         padding: 15px;
+        min-height: auto;
     }
 
     .intro-header h1 {
-        font-size: 2rem;
+        font-size: 1.1rem;
+    }
+
+    .intro-logo {
+        width: 180px;
     }
 
     .login-work {
         width: 90%;
-        padding: 10px;
+        padding: 12px;
     }
 
     .process nav {
@@ -141,6 +151,7 @@ body {
     }
 
     .process nav button {
-        width: 80%;
+        width: 90%;
+        max-width: 250px;
     }
 }

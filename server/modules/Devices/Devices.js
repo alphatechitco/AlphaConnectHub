@@ -6,11 +6,11 @@ class Devices {
     }
 
 
-    async getDevices(device_id){
-        let query = supabase.from('devices').select('*')
-        if(device_id.length>0){
-            query = supabase.from('devices').select('*').eq('device_id', device_id)
-        }
+    async getDevices(profile_id){
+       try {
+        console.log("Profile Id", profile_id)
+        let query = supabase.from('devices').select('*').eq('profile_id', profile_id)
+
 
         const {data, error} = await query;
 
@@ -20,8 +20,13 @@ class Devices {
         }
         if(data.length>0) {
             console.log("Mod Data",data)
-            return data;
+            return {fetch:true, result:data}
+        } else {
+            return {fetch:false, result:data}
         }
+       } catch (error){
+        console.log("Error!", error)
+       }
 
     }
 

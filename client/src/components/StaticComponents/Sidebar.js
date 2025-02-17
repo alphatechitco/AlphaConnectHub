@@ -3,25 +3,52 @@ import React, { useEffect, useState } from "react";
 
 const Sidebar = ({ setSelectedComponent, setLogoutFlag, setSelectedProfile, setWorkSpaceState }) => {
     const [profiles, setProfiles] = useState([]);
+    const [user_id, setUser_id] = useState(null);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [activeProfile, setActiveProfile] = useState(null); // For highlighting the active profile
 
     useEffect(() => {
-        const fetchProfiles = async () => {
+        const checkAuthentication = async () => {
             try {
-                const user_id = localStorage.getItem('user_id');
-                console.log('UID:', user_id);
+                const response = await axios.get('http://localhost:3001/protected/protected-route', { withCredentials: true });
 
-                const response = await axios.post('http://localhost:3001/profile/getProfiles', { user_id });
+                if (response.data.success) {
+                    setIsAuthenticated(true);
+                    setUser_id(response.data.user_id);
+                } else {
+                    setIsAuthenticated(false);
+                    setLogoutFlag(true);
+                    setSelectedComponent("");
+                    setUser_id(null);
+                }
+            } catch (error) {
+                console.error("Auth verification failed: ", error);
+                setIsAuthenticated(false);
+                setSelectedComponent("");
+                setLogoutFlag(false);
+                setUser_id(null);
+            }
+        };
+
+        checkAuthentication();
+    }, []);
+
+    useEffect(() => {
+        const fetchProfiles = async () => {
+            if (!user_id) return; // Wait until user_id is available
+
+            try {
+                const response = await axios.get(`http://localhost:3001/profile/getProfiles?user_id=${user_id}`, {  });
                 const responseData = response.data;
 
                 if (responseData.success) {
                     setProfiles(responseData.profiles);
                     setWorkSpaceState();
 
-                    if (responseData.profiles.length>0){
+                    if (responseData.profiles.length > 0) {
                         const firstProfile = responseData.profiles[0];
                         setSelectedProfile(firstProfile.profile_id);
-                        setActiveProfile(firstProfile.profile_id)
+                        setActiveProfile(firstProfile.profile_id);
                     }
                 }
             } catch (error) {
@@ -30,9 +57,7 @@ const Sidebar = ({ setSelectedComponent, setLogoutFlag, setSelectedProfile, setW
         };
 
         fetchProfiles();
-
-        
-    }, [setSelectedProfile, setWorkSpaceState]);
+    }, [user_id, setSelectedProfile, setWorkSpaceState]); // Fetch profiles only when user_id changes
 
     const handleProfileClick = (profileId) => {
         setSelectedProfile(profileId);

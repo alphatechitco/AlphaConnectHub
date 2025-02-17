@@ -45,6 +45,21 @@ class Profile{
             console.error("Error While Fetching Profiles, ", error)
         }
     }
+    async deleteProfile(profile_id){
+        try {
+            const {data, error} = await supabase.from('profiles').delete().eq('profile_id', profile_id);
+
+            if(error) {
+                console.error("Error While Deleting Profile, ",error);
+                return {delete:false}
+            }
+
+            console.log("Delete Prof Success!")
+            return {delete:true}
+        } catch (error) {
+            console.error("Error While Deleting Profile, ", error)
+        }
+    }
 };
 
 

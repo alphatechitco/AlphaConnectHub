@@ -35,17 +35,16 @@ const UserLogin = ({setIsAuthenticated, setSelectedComponent }) =>{
             headers : {
                 'Content-Type' : 'application/json',
             },
+            withCredentials:true
         })
 
         const responseData = response.data;
 
-        if(responseData.success && responseData.token) {
+        if(responseData.success) {
             setSuccessMessage("Login Successful")
-            localStorage.setItem ('token', responseData.token);
-            localStorage.setItem('user_id', responseData.user_id);
             setIsAuthenticated(true)
             setSelectedComponent("Devices")
-        } else if (!responseData.success && !responseData.account){
+        } else if (!responseData.account){
             setErrors((prevData) => ({
                 ...prevData, 
                 Login : "Account Not Found",
