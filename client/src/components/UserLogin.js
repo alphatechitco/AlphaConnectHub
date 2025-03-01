@@ -1,11 +1,12 @@
 import axios from "axios";
+import {GoogleLogin} from "@react-oauth/google"
 import React, { useState } from "react";
+import {jwtDecode} from 'jwt-decode'
 import './UserLogin.css';
 
 
 const UserLogin = ({setIsAuthenticated, setSelectedComponent }) =>{
     
-
     const [loginData, setLoginData] = useState({
         email: "",
         password:""
@@ -26,11 +27,40 @@ const UserLogin = ({setIsAuthenticated, setSelectedComponent }) =>{
 
     }
 
+    const handleGoogleLogin = async (credentialResponse) => {
+        try {
+            const decoded = jwtDecode(credentialResponse.credential);
+            console.log("Google User Data:", decoded);
+            const response = await axios.post("http://localhost:3001/user/google-login", {
+                id_token: credentialResponse.credential,
+            },
+            {
+                withCredentials:true,
+            }
+            );
+            const responseData = response.data;
+
+            if(responseData.success){
+            setSuccessMessage("Login Successful")
+            setIsAuthenticated(true)
+            setSelectedComponent("Devices")
+            } else {
+                console.error("Google Login Failed:", responseData.message);
+            }
+        }  catch (error) {
+            console.error("Error in Google Login:", error);
+            setErrors((prevErrors) => ({
+                ...prevErrors,
+                Login: "Google Login Failed",
+            }));
+        }
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
-
+            setSuccessMessage("Logging You In...")
         const response = await axios.post('http://localhost:3001/user/login', loginData, {
             headers : {
                 'Content-Type' : 'application/json',
@@ -57,7 +87,7 @@ const UserLogin = ({setIsAuthenticated, setSelectedComponent }) =>{
         }
 
     } catch (error) {
-        console.log("Error While Logging In...", error)
+        setSuccessMessage("");
         if (error.response) {
             const backendError = error.response.data.message || "Unknown Error From Server"
             setErrors((prevData) => ({
@@ -88,6 +118,8 @@ const UserLogin = ({setIsAuthenticated, setSelectedComponent }) =>{
         <div className="userLogin-page">
 
             <h1>Login To Your Alpha Connect Hub</h1>
+            
+            <GoogleLogin onSuccess={handleGoogleLogin} onError={() => console.log("Google Login Failed")} />
 
             <button className="back-button" onClick={()=> setSelectedComponent("")}>Visit Main Page</button>
             <form className="userLogin-form" onSubmit={handleSubmit}>

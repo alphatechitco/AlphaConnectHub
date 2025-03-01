@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import './Devices.css';
 import axios from 'axios';
 import { io } from "socket.io-client";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+
 
 const socket = io("http://localhost:3001"); // Establish the connection once globally
 
@@ -13,15 +15,32 @@ const Devices = ({ setSelectedComponent, profile_id, setIsAuthenticated,setLogou
   const [operationData, setOperationData] = useState([]);
   const [authentication, setAuthentication] = useState('');
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [dataBaseMode, setDataBaseMode] = useState(false);
+  const [mongodbData, setMongodbData] = useState([]);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   // Fetch devices and authentication details
   const closeConnection = async () => {
-    const response = await axios.post("http://localhost:3001/mqtt/disconnect-mqtt")
-
+    const response = await axios.post("http://localhost:3001/mqtt/disconnect-mqtt");
+    if(response.data.close === true){
+      setOperationData([{message:"Operational Data Closed. View Collected Data from Database or Restart MQTT"}])
+    }
     
   }
+
+  useEffect(() => {
+    const fetchDataBaseData = async (device) => {
+      const response = await axios.get(`http://localhost:3001/mqtt/get-mqtt-mongodb?topic=${device.mqtt_topic}`);
+
+      const responseData = response.data;
+      setMongodbData(responseData);
+    
+    }
+    if(selectedDevice){
+      fetchDataBaseData(selectedDevice);
+    }
+  }, [dataBaseMode])
 
 
   useEffect(() => {
@@ -272,7 +291,8 @@ void loop() {
             <p><strong>Status:</strong> {selectedDevice.status}</p>
             <p><strong></strong></p>
             <button onClick={() => downloadCode(selectedDevice)}>Download Code (.cpp)</button>
-            <button onClick={() => setIsAuthModalOpen(true)}>View Operational Data</button>
+            <button onClick={() => setIsAuthModalOpen(true)}>View Live Operational Data</button>
+            <button onClick={() => setDataBaseMode(true)}>View Collected Data</button>
             <button onClick={() => handleDeviceDeletion(selectedDevice.device_id)}>Delete Device</button>
           </div>
         ) : (
@@ -280,9 +300,42 @@ void loop() {
         )}
       </div>
 
+      {dataBaseMode && (
+  <div className="databasemode">
+    <h2>Collected Data</h2>
+    
+    {mongodbData.length > 0 ? (
+      <>
+        {/* Graph */}
+        <ResponsiveContainer width="100%" height={300}>
+          <LineChart data={mongodbData.slice(-10)}> {/* Show only last 10 */}
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="timestamp" hide={true} /> {/* Hide timestamp for clarity */}
+            <YAxis />
+            <Tooltip />
+            <Line type="monotone" dataKey="data" stroke="#8884d8" />
+          </LineChart>
+        </ResponsiveContainer>
+
+        {/* Limited Data List */}
+        <div className="dataList">
+          {mongodbData.slice(-10).map((data, index) => (
+            <div key={index} className="dataRow">
+              <p><strong>Timestamp:</strong> {data.timestamp}</p>
+              <p><strong>Temperature:</strong> {data.data}</p>
+            </div>
+          ))}
+        </div>
+      </>
+    ) : (
+      <p>Loading Data...</p>
+    )}
+  </div>
+)}
       {isAuthModalOpen && (
         <div className="authModal">
           <h3>Authentication Required</h3>
+          <form>
           <input
             type="text"
             placeholder="Username"
@@ -295,6 +348,7 @@ void loop() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
+          </form>
           <button onClick={fetchOperationalData}>Authenticate</button>
           <button onClick={() => setIsAuthModalOpen(false)}>Cancel</button>
         </div>
@@ -311,7 +365,7 @@ void loop() {
             ))}
           </div>
         ) : (
-          <p>No operational data available</p>
+          <p>No Live operational data available...Check IoT Device</p>
         )}
       </div>
     </div>

@@ -53,6 +53,14 @@ router.put('/reset-cred/:reg_id', async (req, res) => {
     }
 })
 
+
+router.get('/get-mqtt-mongodb', async (req, res) => {
+    const {topic} = req.query;
+
+    const result = await handleData.getIoTData(topic);
+    res.status(200).json(result);
+})
+
 router.get('/getGroups', async (req, res) => {
     console.log("API")
     try {
@@ -124,7 +132,7 @@ router.post('/subscribe', async (req, res) => {
 router.post('/disconnect-mqtt', (req, res) => {
     console.log("API")
     handleData.disconnectClient();
-    res.status(200).json({ message: 'MQTT disconnected successfully.' });
+    res.status(200).json({close:true, message: 'MQTT disconnected successfully.' });
 });
 
 

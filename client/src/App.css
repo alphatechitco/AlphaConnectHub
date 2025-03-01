@@ -6,7 +6,9 @@
   font-family: Arial, sans-serif;
   background: linear-gradient(90deg, #0f2027, #203a43, #2c5364);
 }
-
+html, body {
+  overflow-x: hidden;
+}
 /* Header */
 .App-header {
   background-color: black;
@@ -160,6 +162,7 @@ footer p a:hover {
 @media (max-width: 768px) {
   .App {
       padding: 0px;
+      width: 100%;
       
   }
 
@@ -172,8 +175,12 @@ footer p a:hover {
   .app-logo {
       width: 150px;
   }
-  .App-sidebar, 
   .profiles {
+    width: 93%;
+    flex: none;
+    margin-bottom: 20px;
+}
+.App-sidebar{
     width: 91%;
     flex: none;
     margin-bottom: 20px;

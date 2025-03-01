@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import './UserReg.css'
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
+import { GoogleLogin } from "@react-oauth/google";
 
 
-const UserReg = ({setIsAuthenticated}) => {
+const UserReg = ({setIsAuthenticated, setSelectedComponent}) => {
 
     const [packageDetails, setPackageDetails] = useState(null)
     const [registerData, setRegisterData] = useState({
@@ -85,6 +87,36 @@ const UserReg = ({setIsAuthenticated}) => {
         return Object.keys(newErrors).length === 0 ;
     }
 
+    const handleGoogleLogin = async (credentialResponse) => {
+        try {
+            const decoded = jwtDecode(credentialResponse.credential);
+            console.log("Google User Data:", decoded);
+            const response = await axios.post("http://localhost:3001/user/google-login", {
+                id_token: credentialResponse.credential,
+            },
+            {
+                withCredentials:true,
+            }
+            );
+            const responseData = response.data;
+
+            if(responseData.success){
+            setSuccessMessage("Login Successful")
+            setIsAuthenticated(true)
+            setSelectedComponent("Devices")
+            } else {
+                console.error("Google Login Failed:", responseData.message);
+            }
+        }  catch (error) {
+            console.error("Error in Google Login:", error);
+            setErrors((prevErrors) => ({
+                ...prevErrors,
+                Login: "Google Login Failed",
+            }));
+        }
+    }
+
+
     const handleSubmit = async (e) => {
 
         e.preventDefault();
@@ -119,6 +151,7 @@ const UserReg = ({setIsAuthenticated}) => {
 
 
         }  catch (error) {
+            setSuccessMessage("");
             console.log(error)
             setErrors ((prevData) => ({
                 ...prevData,
@@ -127,11 +160,17 @@ const UserReg = ({setIsAuthenticated}) => {
         }
 
     }
+    
 
 
     return (
         <div className="userRegister-page">
+            <button onClick={() => setSelectedComponent("")}>Visit Main Page</button>
             <h2>GET YOUR ALPHA CONNECT HUB</h2>
+            <h3>Already Using Alpha Connect Hub?</h3>
+            <button onClick={()=>setSelectedComponent("Login")}>Click Here To Login</button>
+            <GoogleLogin onSuccess={handleGoogleLogin} onError={() => console.log("Google Login Failed")} />
+
             <div className="packages">
                 {packageDetails && <h3 className="package-name">{packageDetails.package}</h3>}
             </div>
@@ -201,9 +240,10 @@ const UserReg = ({setIsAuthenticated}) => {
 
 
                 <button type="submit">Register</button>
-            </form>
             {succesMessgae && <p className="success">{succesMessgae}</p>}
             {errors.api && <p className="error">{errors.api}</p>}
+
+            </form>
         </div>
     )
 }

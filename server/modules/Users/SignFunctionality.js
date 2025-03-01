@@ -62,6 +62,50 @@ class SignFunctionality {
         return {success:true, account:true, user_id, message:"Login Successful"}
 
     }
+
+    
+
+    async googleLogin(id_token){
+        if (!id_token) {
+            throw new Error("Token missing");
+        }
+    
+        // Verify token with Supabase
+        const { data, error } = await supabase.auth.signInWithIdToken({
+            provider:'google',
+            token:id_token
+        })
+    
+        if (error || !data.user) {
+            console.error("Auth Error:", error);
+            throw new Error("Google authentication failed");
+        }
+    
+        // Extract user data
+        const { id, email, user_metadata } = data.user;
+    
+        // Check if user exists in your database
+        const { data: existingUser } = await supabase
+            .from("users")
+            .select("*")
+            .eq("email", email)
+            .single();
+    
+        if (!existingUser) {
+            // Register new user in your database
+            const {error:insertError} = await supabase.from("users").insert([
+                {email, name: user_metadata.full_name, recovery_email:email}
+            ]);
+            if (insertError) {
+                console.error("User Insert Error:", insertError);
+                throw new Error("User registration failed");
+            }
+        }
+    
+    
+    
+        return {id,email, message: "Login successful" };
+    };
 }
 
 

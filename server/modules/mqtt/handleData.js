@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const handleCred = require('./handleCred');
 const Devices = require('../Devices/Devices');
 const { sendToFrontend } = require('../../socketService');
+const {connectDB} = require('../../database/mongodbconfig')
 
 class HandleData {
     constructor() {
@@ -15,6 +16,36 @@ class HandleData {
         this.cleanupInterval = null; // Timer for auto-cleanup
     }
 
+    async saveIoTData(topic, data){
+        const db = await connectDB();
+        const collection = db.collection("deviceData");
+
+        const newData = {
+            topic,
+            data,
+            timestamp: new Date(),
+        };
+
+        await collection.insertOne(newData);
+        console.log("📊 Data saved to MongoDB:", newData);
+
+    }
+
+    async getIoTData(topic){
+        console.log("topic Retr", topic);
+        const db = await connectDB();
+        console.log("Connected to DB:", db.databaseName);
+        const collection = db.collection("deviceData");
+
+        const query = {
+            topic: topic,
+        }
+
+        const results = await collection.find(query).toArray()//.sort({timestamp:-1}).toArray();
+
+        console.log("📊 Retrieved IoT Data:", results);
+        return results;
+    }
     // Authenticate user and subscribe
     async authenticateClient(res, user_id, profile_id, username, password, password_flag, device_id) {
         try {
@@ -70,6 +101,7 @@ class HandleData {
 
                 // Store message in buffer
                 this.dataBuffer.push({ topic, message: msg });
+                this.saveIoTData(topic, msg);
                 sendToFrontend('mqtt_message', { topic, message: msg });
 
                 // Start auto-cleanup timer if not already running

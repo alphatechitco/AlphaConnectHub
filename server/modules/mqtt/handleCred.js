@@ -9,20 +9,7 @@ class handleCred {
 
     }
 
-    async getGroups() {
-        
-        const {data, error} = await supabase.from('mqtt_groups').select('group_id, group_name');
-
-        if(error) {
-            console.log("Error While Fetching, ", error.message);
-            return [];
-        }
-        return data;  
-    }
-
-
     
-
     async getCred(user_id, profile_id, creds_mode, password_flag) {
         console.log("Fetching Credentials for:", user_id, profile_id, creds_mode, password_flag);
     

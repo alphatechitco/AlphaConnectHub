@@ -1,7 +1,8 @@
 const express = require('express')
 const router = express.Router();
 const SignFunctionality = require('../modules/Users/SignFunctionality')
-const tokenWork = require('../modules/Tokens/tokenWork')
+const tokenWork = require('../modules/Tokens/tokenWork');
+const { auth } = require('../database/dbconfig');
 
 
 router.post('/register', async (req, res)=>{
@@ -59,4 +60,37 @@ router.post('/login', async (req, res) => {
     }
 })
 
+router.post('/logout', async (req, res) => {
+    try {
+        res.clearCookie("token", {path:"/"});
+        res.status(200).json({ success: true, message: "Logged out successfully" });
+    } catch (error) {
+        res.status(500).json({ success: false, message: "Logout failed" });
+    }
+})
+
+router.post("/google-login", async (req, res) => {
+    try {
+        const { id_token } = req.body;
+        if (!id_token) {
+            return res.status(400).json({ success: false, message: "Token missing" });
+        }
+        const sf = new SignFunctionality();
+        const result = await sf.googleLogin(id_token)
+        const id = result.id;
+        const email = result.email;
+        const token = tokenWork.generateToken({id,email});
+        console.log("Auth Gen Token", token);
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: false,   // false (localhost) true (https)
+            sameSite:'strict',
+            maxAge:'3600000'
+        })
+        res.status(200).json({success:true, account: true, message:"Login Successful"})
+    } catch (error) {
+        console.error("Google login error:", error);
+        res.status(400).json({ success: false, message: error.message });
+    }
+});
 module.exports = router;

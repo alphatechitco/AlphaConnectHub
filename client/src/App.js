@@ -10,7 +10,8 @@ import logo from './components/assets/AlphaConnectLogo.png'
 import GetServerAccess from './components/GetServerAccess'
 import AddDevice from './components/AddDevice';
 import ProfileForm from './components/Profiles';
-
+import {GoogleOAuthProvider} from '@react-oauth/google'
+import axios from 'axios';
 
 function App() {
   const [selectedComponent, setSelectedComponent] = useState(
@@ -41,10 +42,22 @@ function App() {
   })
 
   useEffect (() => {
+    const handleLogout = async () => {
+      try {
+          await axios.post("http://localhost:3001/user/logout", {}, { withCredentials: true });
+  
+          // Clear frontend state
+          setIsAuthenticated(false);
+          sessionStorage.removeItem('selectedComponent');
+          setSelectedComponent("");
+  
+          console.log("User logged out, token removed");
+      } catch (error) {
+          console.error("Logout failed:", error);
+      }
+  };
     if(logoutFlag) {
-      sessionStorage.removeItem('selectedComponent')
-      console.log("LogOutttttt", logoutFlag)
-      setSelectedComponent("")
+      handleLogout();
     }
   }, [logoutFlag])
   // Define a function to render the selected component
@@ -57,9 +70,17 @@ function App() {
       case 'Profiles':
         return <ProfileForm setSelectedComponent={setSelectedComponent}/>;
       case 'Register':
-        return <UserReg setIsAuthenticated = {setIsAuthenticated} setSelectedComponent={setSelectedComponent}/>
+        return (
+          <GoogleOAuthProvider clientId='570566175931-0tm756krmuk8nl1ugfddlahlc33bagt7.apps.googleusercontent.com'>
+        <UserReg setIsAuthenticated = {setIsAuthenticated} setSelectedComponent={setSelectedComponent}/>
+        </GoogleOAuthProvider>
+        );
       case 'Login':
-        return <UserLogin setIsAuthenticated = {setIsAuthenticated} setSelectedComponent={setSelectedComponent}/>
+        return (
+        <GoogleOAuthProvider clientId='570566175931-0tm756krmuk8nl1ugfddlahlc33bagt7.apps.googleusercontent.com'>
+        <UserLogin setIsAuthenticated = {setIsAuthenticated} setSelectedComponent={setSelectedComponent}/>
+        </GoogleOAuthProvider>
+        );
       case 'Get Server Access':
         return <GetServerAccess selectedProfile={selectedProfile} setSelectedComponent={setSelectedComponent} />
       default:

@@ -42,7 +42,6 @@ const GetServerAccess = ({ selectedProfile,setSelectedComponent}) => {
         if (showCreds) {
             const fetchCreds = async () => {
                 const profile_id = selectedProfile;
-                const user_id = localStorage.getItem('user_id');
                 const creds_mode = 'DS';
                 try {
                     const response = await axios.post("http://localhost:3001/mqtt/get-details", { user_id, profile_id, creds_mode });
@@ -59,7 +58,7 @@ const GetServerAccess = ({ selectedProfile,setSelectedComponent}) => {
         e.preventDefault();
         setSuccessMessage("Authenticating With Server...");
         try {
-            const user_id = localStorage.getItem('user_id');
+    
             if (!user_id) {
                 alert("Login Expired! Please log in again.");
                 return;

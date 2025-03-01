@@ -11,6 +11,12 @@
     gap: 20px;
     flex-wrap: wrap; /* Ensures responsiveness */
 }
+.userRegister-page button {
+    background-color: black;
+}
+.userRegister-page button:hover{
+    background-color: rgb(35, 34, 34);
+}
 
 /* Packages Section */
 
@@ -21,7 +27,7 @@
     border-radius: 4px;
 }
 .success{
-    color: black;
+    color: white;
     font-size: large;
     font-weight: bold;
 }
@@ -63,16 +69,25 @@
     border-color: #ff9800;
     background-color: rgba(255, 255, 255, 0.2);
 }
+.userRegister-form button {
+    background-color: #ff5722;
+
+}
+.userRegister-form button:hover {
+    background-color: #f4693e;
+    
+}
+
 
 /* Error Messages */
 .error {
-    color: #ffcccc;
+    color: white;
     font-size: 14px;
     margin-top: 5px;
 }
 
 .success {
-    color: #100b0b;
+    color: white;
     font-size: 14px;
     margin-top: 5px;
 }
