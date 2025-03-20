@@ -3,6 +3,7 @@ import './Devices.css';
 import axios from 'axios';
 import { io } from "socket.io-client";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import CodeFetch from "./CodeFetch";
 
 
 const socket = io("http://localhost:3001"); // Establish the connection once globally
@@ -11,6 +12,7 @@ const Devices = ({ setSelectedComponent, profile_id, setIsAuthenticated,setLogou
   const [user_id, setUser_id] = useState("")
   const [devices, setDevices] = useState([]);
   const [selectedDevice, setSelectedDevice] = useState(null);
+  const [codeTemplate, setCodeTemplate] = useState('');
   const [mqtt, setMQTT] = useState(true)
   const [operationData, setOperationData] = useState([]);
   const [authentication, setAuthentication] = useState('');
@@ -19,7 +21,8 @@ const Devices = ({ setSelectedComponent, profile_id, setIsAuthenticated,setLogou
   const [mongodbData, setMongodbData] = useState([]);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  
+  const [codeProcess, setCodeProcess] = useState(false);
+
 
   // Fetch devices and authentication details
   const closeConnection = async () => {
@@ -291,7 +294,11 @@ void loop() {
             <p><strong>IP:</strong> {selectedDevice.ip_address}</p>
             <p><strong>Status:</strong> {selectedDevice.status}</p>
             <p><strong></strong></p>
-            <button onClick={() => downloadCode(selectedDevice)}>Download Code (.cpp)</button>
+            <button onClick={() => setCodeProcess(true)}>Get Connection Code(.cpp)</button>
+            {codeProcess && selectedDevice &&
+            <CodeFetch selectedDevice={selectedDevice} authentication={authentication}/>
+
+            }
             <h3>Note!!!</h3>
             <p><strong>Review Your Code</strong> Before Uploading To Your IoT Device.</p>
             <p><strong>Use Suggested IDE Platform IDE / Arduino IDE</strong> To Upload The Code To IoT Device.</p>

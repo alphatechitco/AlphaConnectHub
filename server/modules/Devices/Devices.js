@@ -66,9 +66,20 @@ class Devices {
     }
 
 
-    async getDeviceCode () {
+    async getDeviceCode (device_type) {
         try {
-            const {data, error} = await supabase.from()
+            const {data, error} = await supabase.from('device_code').select('code_template').eq('device_type', device_type);
+
+            if(error) {
+                console.error("Error While Fetching Code Template, ", error);
+                return [];
+            } 
+            if (data.length>0) {
+                return data;
+            }
+        } catch (error) {
+            console.error("Unexpected error getDevice Function, ", device_type);
+            return [];
         }
     }
 }
