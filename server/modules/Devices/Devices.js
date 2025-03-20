@@ -64,6 +64,13 @@ class Devices {
         }
 
     }
+
+
+    async getDeviceCode () {
+        try {
+            const {data, error} = await supabase.from()
+        }
+    }
 }
 
 module.exports = Devices;

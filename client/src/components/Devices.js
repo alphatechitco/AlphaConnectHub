@@ -19,6 +19,7 @@ const Devices = ({ setSelectedComponent, profile_id, setIsAuthenticated,setLogou
   const [mongodbData, setMongodbData] = useState([]);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  
 
   // Fetch devices and authentication details
   const closeConnection = async () => {
@@ -291,6 +292,11 @@ void loop() {
             <p><strong>Status:</strong> {selectedDevice.status}</p>
             <p><strong></strong></p>
             <button onClick={() => downloadCode(selectedDevice)}>Download Code (.cpp)</button>
+            <h3>Note!!!</h3>
+            <p><strong>Review Your Code</strong> Before Uploading To Your IoT Device.</p>
+            <p><strong>Use Suggested IDE Platform IDE / Arduino IDE</strong> To Upload The Code To IoT Device.</p>
+            <p>Also, <strong>Make Sure You Have The Correct Board And Port Selected</strong></p>
+            
             <button onClick={() => setIsAuthModalOpen(true)}>View Live Operational Data</button>
             <button onClick={() => setDataBaseMode(true)}>View Collected Data</button>
             <button onClick={() => handleDeviceDeletion(selectedDevice.device_id)}>Delete Device</button>
