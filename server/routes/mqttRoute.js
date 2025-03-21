@@ -3,6 +3,8 @@ const router = express.Router();
 const handleCred = require('../modules/mqtt/handleCred');
 const tokenWork = require('../modules/Tokens/tokenWork');
 const handleData = require('../modules/mqtt/handleData')
+const {mqttInstance} = require('../modules/mqtt/MqttClient');
+
 
 router.post('/getCred', async (req, res) => {
     console.log("API")
@@ -76,11 +78,9 @@ router.get('/getGroups', async (req, res) => {
 
 
 router.post('/register-client', async (req, res) => {
-    console.log("API Called")
 
     try {
         const submissionData = req.body;
-        console.log(submissionData);
         const HC =  new handleCred();
         const result = await HC.addUserToEMQX(submissionData);
 
@@ -96,7 +96,6 @@ router.post('/register-client', async (req, res) => {
 
 router.post('/get-details', async (req, res) => {
     try {
-        console.log("API");
 
         const {user_id,profile_id, creds_mode} = req.body;
         console.log(user_id, profile_id);
@@ -114,17 +113,26 @@ router.post('/get-details', async (req, res) => {
     }
 })
 
-router.post('/subscribe', async (req, res) => {
+router.post('/subscribeData', async (req, res) => {
     try {
-        console.log("API");
 
-        const {user_id,profile_id,username, password, device_id} = req.body;
-        console.log(user_id, profile_id);
-        const password_flag = true;
-        const result = await handleData.authenticateClient(res,user_id,profile_id,username, password, password_flag, device_id);
+        const {profile_id, device_id} = req.body;
+        const result = await handleData.subscribeToData(res, device_id, profile_id);
 
     }  catch (error) {
         res.status(500).json({success:false, message:"Internal Server Error"})
+    }
+})
+
+router.post('/connectClient', async (req, res) => {
+    try {
+        const {user_id,profile_id, password} = req.body;
+        const password_flag = true;
+        const result = await mqttInstance.authenticateClient(res,user_id,profile_id,password,password_flag);
+
+    } catch (error) {
+        console.error("Error While Connecting Client Route/Function, ", error);
+        res.status(500).json({success:false, message:"Internal Server Error"});
     }
 })
 

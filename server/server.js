@@ -12,7 +12,8 @@ const subscriptionRoute = require('./routes/subscriptionRoute');
 const mqttRoute = require('./routes/mqttRoute');
 const protectedRoute = require('./routes/protectedRoute');
 const { stdout, stderr } = require('process');
-const {initSocket,sendToFrontend} = require('./socketService')
+const {initSocket,sendToFrontend} = require('./socketService');
+const codeRouter = require('./routes/codeRoute');
 
 const app = express();
 const server = http.createServer(app);
@@ -42,6 +43,8 @@ app.use('/devices', devicesRoute);
 app.use('/subscription', subscriptionRoute);
 
 app.use('/mqtt', mqttRoute);
+
+app.use('/code', codeRouter);
 
 app.use('/profile', profileRoute);
 

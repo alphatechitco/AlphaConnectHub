@@ -53,7 +53,9 @@ class Devices {
 
     async regDevice(user_id, profile_id, device_name, device_type, description, mqtt_topic){
 
-        const {data, error} = await supabase.from('devices').insert([{user_id,profile_id,device_name,device_type,description,mqtt_topic}]).select('device_id')
+        const mqtt_control_topic = mqtt_topic+'/controls';
+
+        const {data, error} = await supabase.from('devices').insert([{user_id,profile_id,device_name,device_type,description,mqtt_topic, mqtt_control_topic}]).select('device_id')
 
         if(error) {
             console.error("Error While Registering Device", error)
@@ -80,6 +82,23 @@ class Devices {
         } catch (error) {
             console.error("Unexpected error getDevice Function, ", device_type);
             return [];
+        }
+    }
+
+
+    async getControls(device_type) {
+        try {
+            const {data, error} = await supabase.from('controls').select('control_name').eq('device_type', device_type);
+
+            if(error) {
+                console.error("Error While Fetching Controls Info, ", error);
+                return [];
+            } 
+            if(data.length>0) {
+                return data;
+            }
+        } catch (error) {
+            console.error("Error In Getting Controls Function, ", error);
         }
     }
 }

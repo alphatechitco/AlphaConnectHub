@@ -17,6 +17,7 @@ const Devices = ({ setSelectedComponent, profile_id, setIsAuthenticated,setLogou
   const [operationData, setOperationData] = useState([]);
   const [authentication, setAuthentication] = useState('');
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [liveData, setLiveData] = useState(false);
   const [dataBaseMode, setDataBaseMode] = useState(false);
   const [mongodbData, setMongodbData] = useState([]);
   const [username, setUsername] = useState("");
@@ -147,20 +148,19 @@ const Devices = ({ setSelectedComponent, profile_id, setIsAuthenticated,setLogou
       alert("Could Not Delete!")
     }
   }
+
   // Fetch operational data after authentication
-  const fetchOperationalData = async () => {
+  const connectMQTTServer = async () => {
     if (!username || !password) {
       alert("Please enter your credentials.");
       return;
     }
 
     try {
-      const response = await axios.post("http://localhost:3001/mqtt/subscribe", {
+      const response = await axios.post("http://localhost:3001/mqtt/connectClient", {
         user_id,
         profile_id,
-        username,
         password,
-        device_id: selectedDevice.device_id,
       });
 
       if (response.data.auth) {
@@ -175,99 +175,32 @@ const Devices = ({ setSelectedComponent, profile_id, setIsAuthenticated,setLogou
     }
   };
 
-  // Generate ESP32 code
-  const generateDeviceCode = (device, authentication) => {
-    return `#include <WiFi.h>
-#include <PubSubClient.h>
-
-const char* ssid = ""; // Write Your Wifi Network Name
-const char* password = ""; // Write Your Wifi Password 
-const char* mqtt_server = "${authentication.mqtt_server}";
-const int mqtt_port = ${authentication.mqtt_port};
-
-const char* mqtt_username = "${authentication.username}";
-const char* mqtt_password = ""; //Write Ur Password Here
-
-WiFiClient espClient;
-PubSubClient client(espClient);
-
-const int sensorPin = 32;
-
-void connectToWiFi() {
-    Serial.println("Connecting to WiFi...");
-    WiFi.begin(ssid, password);
-    while (WiFi.status() != WL_CONNECTED) {
-        delay(1000);
-        Serial.print(".");
+  // Fetch operational data after authentication
+  const fetchOperationalData = async () => {
+    if (!username || !password) {
+      alert("Please enter your credentials.");
+      return;
     }
-    Serial.println("\\nWiFi connected");
-    Serial.print("IP Address: ");
-    Serial.println(WiFi.localIP());
-}
 
-void connectToMQTT() {
-    while (!client.connected()) {
-        Serial.println("Connecting to MQTT...");
-        if (client.connect("${authentication.client_id}", mqtt_username, mqtt_password)) {
-            Serial.println("Connected to MQTT");
-        } else {
-            Serial.print("Failed to connect to MQTT, rc=");
-            Serial.println(client.state());
-            delay(2000);
-        }
+    try {
+      const response = await axios.post("http://localhost:3001/mqtt/subscribeData", {
+        profile_id,
+        device_id: selectedDevice.device_id,
+      });
+
+      if (response.data.auth) {
+        alert("Successfully authenticated and subscribed to MQTT!");
+      } else {
+        alert("Authentication failed. Please check your credentials.");
+      }
+    } catch (error) {
+      console.error("Error fetching operational data:", error);
+      alert("An error occurred while fetching operational data.");
     }
-}
-
-void mqttCallback(char* topic, byte* payload, unsigned int length) {
-    Serial.print("Message received on topic: ");
-    Serial.println(topic);
-    Serial.print("Message: ");
-    for (int i = 0; i < length; i++) {
-        Serial.print((char)payload[i]);
-    }
-    Serial.println();
-}
-
-void setup() {
-    Serial.begin(115200);
-    connectToWiFi();
-    client.setServer(mqtt_server, mqtt_port);
-    client.setCallback(mqttCallback);
-    connectToMQTT();
-}
-
-void loop() {
-    if (!client.connected()) {
-        connectToMQTT();
-    }
-    client.loop();
-
-    int rawValue = analogRead(sensorPin);
-    float voltage = rawValue * (3.3 / 4095.0);
-    float temperature = voltage * 100.0;
-
-    Serial.print("Temperature: ");
-    Serial.print(temperature);
-    Serial.println("°C");
-
-    String tempPayload = String(temperature);
-    client.publish("${device.mqtt_topic}", tempPayload.c_str());
-
-    delay(5000);
-}
-    `;
   };
 
-  // Download ESP32 code
-  const downloadCode = (device) => {
-    const code = generateDeviceCode(device, authentication);
-    const blob = new Blob([code], { type: "text/cpp" });
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = `${device.device_name}_config.cpp`;
-    link.click();
-  };
-
+  
+  
   return (
     <div className="deviceTab">
       <div className="deviceList">
@@ -304,7 +237,8 @@ void loop() {
             <p><strong>Use Suggested IDE Platform IDE / Arduino IDE</strong> To Upload The Code To IoT Device.</p>
             <p>Also, <strong>Make Sure You Have The Correct Board And Port Selected</strong></p>
             
-            <button onClick={() => setIsAuthModalOpen(true)}>View Live Operational Data</button>
+            <button onClick={() => setIsAuthModalOpen(true)}>Connect To MQTT Server</button>
+            <button onClick={() => fetchOperationalData(true)}>View Live Operational Data</button>
             <button onClick={() => setDataBaseMode(true)}>View Collected Data</button>
             <button onClick={() => handleDeviceDeletion(selectedDevice.device_id)}>Delete Device</button>
           </div>
@@ -362,7 +296,8 @@ void loop() {
             onChange={(e) => setPassword(e.target.value)}
           />
           </form>
-          <button onClick={fetchOperationalData}>Authenticate</button>
+          <button onClick={connectMQTTServer}>Authenticate</button>
+
           <button onClick={() => setIsAuthModalOpen(false)}>Cancel</button>
         </div>
       )}
